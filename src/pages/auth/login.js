@@ -5,19 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
-	Alert,
-	Box,
-	Button,
-	FormHelperText,
-	Link,
-	Stack,
-	Tab,
-	Tabs,
-	TextField,
-	Typography
+	Alert, Box, Button, FormHelperText, Link, Stack, Tab, Tabs, TextField, Typography
 } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
+import authService from 'src/services/authService.js';
 
 const Page = () => {
 	const router = useRouter();
@@ -25,8 +17,8 @@ const Page = () => {
 	const [method, setMethod] = useState('email');
 	const formik = useFormik({
 		initialValues: {
-			email: 'demo@devias.io',
-			password: 'Password123!',
+			email: 'thangq1@gmail.com',
+			password: '123456##Bqt',
 			submit: null
 		},
 		validationSchema: Yup.object({
@@ -41,9 +33,15 @@ const Page = () => {
 				.required('Password is required')
 		}),
 		onSubmit: async (values, helpers) => {
+			// const res = await authService.login(values.email, values.password);
 			try {
 				await auth.signIn(values.email, values.password);
+				// if (res?.statusCode === 200)
 				router.push('/');
+				// else {
+				// 	throw new Error('Account is not exist');
+				// }
+
 			} catch (err) {
 				helpers.setStatus({ success: false });
 				helpers.setErrors({ submit: err.message });
@@ -52,20 +50,17 @@ const Page = () => {
 		}
 	});
 
-	const handleMethodChange = useCallback(
-		(event, value) => {
-			setMethod(value);
-		},
-		[]
-	);
+	const handleMethodChange = useCallback((event, value) => {
+		setMethod(value);
+	}, []);
 
-	const handleSkip = useCallback(
+	/*const handleSkip = useCallback(
 		() => {
 			auth.skip();
 			router.push('/');
 		},
 		[auth, router]
-	);
+	);*/
 
 	return (
 		<>
@@ -158,9 +153,9 @@ const Page = () => {
 										value={formik.values.password}
 									/>
 								</Stack>
-								<FormHelperText sx={{ mt: 1 }}>
+								{/* <FormHelperText sx={{ mt: 1 }}>
 									Optionally you can skip.
-								</FormHelperText>
+								</FormHelperText> */}
 								{formik.errors.submit && (
 									<Typography
 										color="error"
@@ -179,21 +174,21 @@ const Page = () => {
 								>
 									Continue
 								</Button>
-								<Button
+								{/* <Button
 									fullWidth
 									size="large"
 									sx={{ mt: 3 }}
 									onClick={handleSkip}
 								>
 									Skip authentication
-								</Button>
+								</Button> */}
 								<Alert
 									color="primary"
 									severity="info"
 									sx={{ mt: 3 }}
 								>
 									<div>
-										You can use <b>demo@devias.io</b> and password <b>Password123!</b>
+										You can use <b>thangq1@gmail.com</b> and password <b>123456##Bqt</b>
 									</div>
 								</Alert>
 							</form>
@@ -204,10 +199,10 @@ const Page = () => {
 									sx={{ mb: 1 }}
 									variant="h6"
 								>
-									Not available in the demo
+									Not available
 								</Typography>
 								<Typography color="text.secondary">
-									To prevent unnecessary costs we disabled this feature in the demo.
+									We will update in future
 								</Typography>
 							</div>
 						)}
