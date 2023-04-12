@@ -8,14 +8,14 @@ const apiConfig = axios.create({
 		'Content-Type': 'application/json'
 	}
 })
-
 apiConfig.interceptors.request.use((config) => {
-	const token = localStorage.getItem(localStorageConst.JWT_TOKEN)
-	if (token && !isJwtExpired(token)) {
-		config.headers.Authorization = `Bearer ${token}`
-	} else {
-		localStorage.removeItem(localStorageConst.IS_LOGIN)
-		localStorage.removeItem(localStorageConst.JWT_TOKEN)
+	if (typeof window !== 'undefined') {
+		const token = localStorage?.getItem(localStorageConst.JWT_TOKEN)
+		if (token && !isJwtExpired(token)) {
+			config.headers.Authorization = `Bearer ${token}`
+		} else {
+			localStorage.removeItem(localStorageConst.JWT_TOKEN)
+		}
 	}
 	return config;
 }, (error) => {
