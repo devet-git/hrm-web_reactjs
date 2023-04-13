@@ -17,6 +17,7 @@ export const AccountUpdatePassword = () => {
 		confirm: ''
 	});
 
+
 	const handleChange = useCallback(
 		(event) => {
 			setValues((prevState) => ({

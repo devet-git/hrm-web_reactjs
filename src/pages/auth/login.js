@@ -131,8 +131,8 @@ const Page = () => {
 							>
 								<Stack spacing={3}>
 									<TextField
-										error={!!(formik.touched.email && formik.errors.email)}
 										fullWidth
+										error={!!(formik.touched.email && formik.errors.email)}
 										helperText={formik.touched.email && formik.errors.email}
 										label="Email Address"
 										name="email"
@@ -142,8 +142,8 @@ const Page = () => {
 										value={formik.values.email}
 									/>
 									<TextField
-										error={!!(formik.touched.password && formik.errors.password)}
 										fullWidth
+										error={!!(formik.touched.password && formik.errors.password)}
 										helperText={formik.touched.password && formik.errors.password}
 										label="Password"
 										name="password"

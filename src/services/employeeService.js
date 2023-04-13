@@ -10,6 +10,14 @@ const employeeService = {
 			return error?.response?.data
 		}
 	},
+	async add({ firstName, lastName, gender, address, dob }) {
+		try {
+			const res = await apiConfig.post(endpointConst.EMPLOYEE.ADD, { firstName, lastName, gender, address, dob })
+			return res.data
+		} catch (error) {
+			return error?.response?.data
+		}
+	},
 
 }
 

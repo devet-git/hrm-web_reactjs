@@ -18,6 +18,14 @@ const authService = {
 		} catch (error) {
 			return error.response.data
 		}
+	},
+	async logout() {
+		try {
+			const res = await apiConfig.get(endpointConst.AUTH.LOGOUT)
+			return res.status == 200
+		} catch (error) {
+			return false
+		}
 	}
 }
 

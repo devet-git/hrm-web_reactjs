@@ -14,56 +14,29 @@ import employeeService from 'src/services/employeeService';
 import apiConfig from 'src/config/api';
 import endpointConst from 'src/constants/endpointConst';
 import EmployeesTable2 from 'src/sections/employees/EmployeesTable';
+import EmployeeAddNewFormDialog from 'src/sections/employees/employees-add-new';
 
 const now = new Date();
 
 
 const Page = () => {
-
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(5);
-	const [dbEmployee, setDbEmployee] = useState(null)
-	// const useEmployeeIds = (employees) => {
-	// 	return useMemo(
-	// 		() => {
-	// 			return employees.map((emp) => emp.id);
-	// 		},
-	// 		[employees]
-	// 	);
-	// };
-	// const useEmployees = (page, rowsPerPage) => {
-	// 	return useMemo(
-	// 		() => {
-	// 			return applyPagination(dbEmployee, page, rowsPerPage);
-	// 		},
-	// 		[page, rowsPerPage]
-	// 	);
-	// };
-	// const employees = useEmployees(page, rowsPerPage);
-	// const employeesIds = useEmployeeIds(employees);
-	// const EmployeesSelection = useSelection(employeesIds);
-
-	const handlePageChange = useCallback(
-		(event, value) => {
-			setPage(value);
-		},
-		[]
-	);
-
-	const handleRowsPerPageChange = useCallback(
-		(event) => {
-			setRowsPerPage(event.target.value);
-		},
-		[]
-	);
+	const [employees, setEmployees] = useState(null)
+	const [isOpenAddNewDialog, setIsOpenAddNewDialog] = useState(false)
 	useEffect(() => {
 		(async () => {
 			let res = await employeeService.getAll()
-			setDbEmployee(res.data)
+			console.log(res.data);
+			res && res.statusCode === 200 && setEmployees(res.data)
 		})()
 	}, [])
+
 	return (
 		<>
+			<EmployeeAddNewFormDialog
+				isOpen={isOpenAddNewDialog}
+				// onClose={() => setIsOpenAddNewDialog(false)}
+				onCancel={() => setIsOpenAddNewDialog(false)}
+			/>
 			<Head>
 				<title>
 					Employees | Devet HRM
@@ -73,7 +46,7 @@ const Page = () => {
 				component="main"
 				sx={{
 					flexGrow: 1,
-					py: 8
+					pb: 7, pt: 2.5
 				}}
 			>
 				<Container maxWidth="xl">
@@ -122,26 +95,14 @@ const Page = () => {
 										</SvgIcon>
 									)}
 									variant="contained"
+									onClick={() => setIsOpenAddNewDialog(true)}
 								>
 									Add
 								</Button>
 							</div>
 						</Stack>
 						<EmployeesSearch />
-						<EmployeesTable2 data={dbEmployee} />
-						{/* <EmployeesTable
-							count={dbEmployee?.length}
-							items={dbEmployee || []}
-						onDeselectAll={EmployeesSelection.handleDeselectAll}
-						onDeselectOne={EmployeesSelection.handleDeselectOne}
-						onPageChange={handlePageChange}
-						onRowsPerPageChange={handleRowsPerPageChange}
-						onSelectAll={EmployeesSelection.handleSelectAll}
-						onSelectOne={EmployeesSelection.handleSelectOne}
-						page={page}
-						rowsPerPage={rowsPerPage}
-						selected={EmployeesSelection.selected}
-						/> */}
+						<EmployeesTable2 data={employees} />
 					</Stack>
 				</Container>
 			</Box>
