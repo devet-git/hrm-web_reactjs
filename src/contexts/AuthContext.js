@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import authService from 'src/services/authService';
 import userService from 'src/services/userService';
 import localStorageConst from 'src/constants/localStorageConst';
+import { useRouter } from 'next/router';
+import { isJwtExpired } from 'jwt-check-expiration';
 
 const HANDLERS = {
 	INITIALIZE: 'INITIALIZE',
@@ -67,6 +69,7 @@ export const AuthProvider = (props) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const initialized = useRef(false);
 	const [currentUser, setCurrentUser] = useState({})
+	const router = useRouter();
 
 	const initialize = async () => {
 		// Prevent from calling twice in development mode with React.StrictMode enabled
@@ -108,6 +111,22 @@ export const AuthProvider = (props) => {
 		}
 	};
 
+	// useEffect(() => {
+	// 	const handleRouteChange = async (url, { shallow }) => {
+	// 		const token = localStorage.getItem(localStorageConst.JWT_TOKEN) || null
+	// 		const isLogin = localStorage.getItem('authenticated') === "true" || false
+
+	// 		if (!token || (token && isJwtExpired(token)) || !isLogin) {
+	// 			await signOut()
+	// 			// router.prefetch("/auth/login")
+	// 		}
+	// 	}
+	// 	router.events.on('routeChangeStart', handleRouteChange)
+	// 	// return () => {
+	// 	// 	router.events.off('routeChangeStart', handleRouteChange)
+	// 	// }
+	// }, [router]);
+
 	useEffect(() => {
 		initialize();
 	}, []);
@@ -124,8 +143,8 @@ export const AuthProvider = (props) => {
 		} catch (err) {
 			console.error(err);
 		}
+		//TODO: GET LOGGING USER DETAIL
 		const userRes = await userService.getInfo(res.data?.userID)
-
 		setCurrentUser(userRes)
 		localStorage.setItem(localStorageConst.CURRENT_USER, JSON.stringify(userRes))
 		// console.log(userRes);
@@ -136,7 +155,6 @@ export const AuthProvider = (props) => {
 			name: userRes.username,
 			email: userRes.email,
 		};
-
 		dispatch({
 			type: HANDLERS.SIGN_IN,
 			payload: user
@@ -154,9 +172,9 @@ export const AuthProvider = (props) => {
 			localStorage.removeItem('authenticated')
 			localStorage.removeItem(localStorageConst.JWT_TOKEN)
 		}
-		// dispatch({
-		// 	type: HANDLERS.SIGN_OUT
-		// });
+		dispatch({
+			type: HANDLERS.SIGN_OUT
+		});
 	};
 
 	return (

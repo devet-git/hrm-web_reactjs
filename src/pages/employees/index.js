@@ -5,15 +5,11 @@ import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIc
 import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
-import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { EmployeesTable } from 'src/sections/employees/employees-table';
 import { EmployeesSearch } from 'src/sections/employees/emplyees-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 import employeeService from 'src/services/employeeService';
-import apiConfig from 'src/config/api';
-import endpointConst from 'src/constants/endpointConst';
-import EmployeesTable2 from 'src/sections/employees/EmployeesTable';
+import EmployeesDataTable from 'src/sections/employees/EmployeesTable';
 import EmployeeAddNewFormDialog from 'src/sections/employees/employees-add-new';
 
 const now = new Date();
@@ -22,6 +18,7 @@ const now = new Date();
 const Page = () => {
 	const [employees, setEmployees] = useState(null)
 	const [isOpenAddNewDialog, setIsOpenAddNewDialog] = useState(false)
+
 	useEffect(() => {
 		(async () => {
 			let res = await employeeService.getAll()
@@ -102,7 +99,7 @@ const Page = () => {
 							</div>
 						</Stack>
 						<EmployeesSearch />
-						<EmployeesTable2 data={employees} />
+						<EmployeesDataTable data={employees} />
 					</Stack>
 				</Container>
 			</Box>

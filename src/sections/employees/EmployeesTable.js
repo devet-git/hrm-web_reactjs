@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { Button, IconButton } from '@mui/material';
 import { BiBullseye } from "react-icons/bi"
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 const columns = [
 	{ field: 'firstName', headerName: 'First name', width: 130 },
 	{ field: 'lastName', headerName: 'Last name', width: 130 },
@@ -44,7 +45,7 @@ const SeeEmployeeDetail = ({ empId }) => {
 		</IconButton>
 	)
 }
-export default function EmployeesTable2({ data }) {
+export default function EmployeesDataTable({ data }) {
 	return (
 		<div style={{ height: 350, width: '100%' }}>
 			<DataGrid
@@ -54,7 +55,11 @@ export default function EmployeesTable2({ data }) {
 				// rowsPerPageOptions={[5, 10, 20]}
 				checkboxSelection
 			/>
-			<Button variant='outlined'>Save change</Button>
+			<Button
+				variant='outlined'
+				onClick={() => {
+					return toast("Saved", { type: 'success' })
+				}}>Save change</Button>
 		</div>
 	);
 }

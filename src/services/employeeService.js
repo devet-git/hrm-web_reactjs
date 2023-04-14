@@ -15,7 +15,7 @@ const employeeService = {
 			const res = await apiConfig.post(endpointConst.EMPLOYEE.ADD, { firstName, lastName, gender, address, dob })
 			return res.data
 		} catch (error) {
-			return error?.response?.data
+			return error?.response?.data || null
 		}
 	},
 

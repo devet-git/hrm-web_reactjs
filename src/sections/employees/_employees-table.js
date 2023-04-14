@@ -17,7 +17,7 @@ import {
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
 const gender = ["Female", "Male", "Other"]
-export const EmployeesTable = (props) => {
+export const _EmployeesTable = (props) => {
 	const {
 		count = 0,
 		items = [],
@@ -141,7 +141,7 @@ export const EmployeesTable = (props) => {
 	);
 };
 
-EmployeesTable.propTypes = {
+_EmployeesTable.propTypes = {
 	count: PropTypes.number,
 	items: PropTypes.array,
 	onDeselectAll: PropTypes.func,

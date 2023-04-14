@@ -45,9 +45,7 @@ const Page = () => (
 							>
 								{/* <AccountProfileDetails /> */}
 								<AccountUpdatePassword />
-
 							</Grid>
-
 						</Grid>
 					</div>
 				</Stack>

@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import { toast } from "react-toastify";
 import employeeService from "src/services/employeeService";
 
 export const EmployeeContext = createContext(null)
@@ -8,6 +9,9 @@ export function EmployeeProvider(props) {
 
 	const create = async ({ firstName, lastName, gender, address, dob }) => {
 		const res = await employeeService.add({ firstName, lastName, gender, address, dob })
+
+		if (res && res.statusCode === 200) toast("Add employee successfully", { type: "success" })
+		else toast("Add failed employee", { type: "error" })
 		console.log(res);
 	}
 

@@ -17,7 +17,6 @@ import { useAppContext } from 'src/contexts/AppContext';
 
 export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, onSubmit }) {
 	const employee = useEmployee()
-	const app = useAppContext()
 	const formik = useFormik({
 		initialValues: {
 			firstName: '',
@@ -50,7 +49,6 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 					gender: values.gender,
 					dob: values.dob.format("DD/MM/YYYY")
 				})
-				// app.setNotifyMessage("Wow so easy !");
 			} catch (err) {
 				helpers.setStatus({ success: false });
 				helpers.setErrors({ submit: err.message });
