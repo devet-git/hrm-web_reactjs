@@ -5,6 +5,7 @@ import userService from 'src/services/userService';
 import localStorageConst from 'src/constants/localStorageConst';
 import { useRouter } from 'next/router';
 import { isJwtExpired } from 'jwt-check-expiration';
+import { useAppContext } from './AppContext';
 
 const HANDLERS = {
 	INITIALIZE: 'INITIALIZE',
@@ -70,7 +71,7 @@ export const AuthProvider = (props) => {
 	const initialized = useRef(false);
 	const [currentUser, setCurrentUser] = useState({})
 	const router = useRouter();
-
+	const { refreshApp, refresh } = useAppContext();
 	const initialize = async () => {
 		// Prevent from calling twice in development mode with React.StrictMode enabled
 		if (initialized.current) {
@@ -111,21 +112,17 @@ export const AuthProvider = (props) => {
 		}
 	};
 
-	// useEffect(() => {
-	// 	const handleRouteChange = async (url, { shallow }) => {
-	// 		const token = localStorage.getItem(localStorageConst.JWT_TOKEN) || null
-	// 		const isLogin = localStorage.getItem('authenticated') === "true" || false
+	useEffect(() => {
+		(async () => {
+			const token = localStorage.getItem(localStorageConst.JWT_TOKEN) || null
+			const isLogin = localStorage.getItem('authenticated')
 
-	// 		if (!token || (token && isJwtExpired(token)) || !isLogin) {
-	// 			await signOut()
-	// 			// router.prefetch("/auth/login")
-	// 		}
-	// 	}
-	// 	router.events.on('routeChangeStart', handleRouteChange)
-	// 	// return () => {
-	// 	// 	router.events.off('routeChangeStart', handleRouteChange)
-	// 	// }
-	// }, [router]);
+			if (!token || (token && isJwtExpired(token)) || isLogin !== "true") {
+				await signOut()
+				// router.prefetch("/auth/login")
+			}
+		})()
+	}, [refreshApp]);
 
 	useEffect(() => {
 		initialize();
@@ -159,10 +156,12 @@ export const AuthProvider = (props) => {
 			type: HANDLERS.SIGN_IN,
 			payload: user
 		});
+		refresh()
 	};
 
 	const signUp = async (email, name, password) => {
 		throw new Error('Sign up is not implemented');
+		refresh()
 	};
 
 	const signOut = async () => {

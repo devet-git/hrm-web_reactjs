@@ -9,9 +9,10 @@ const { createContext, useContext, useEffect, useState } = require("react");
 export const AppContext = createContext(null)
 export function AppProvider(props) {
 	const { children } = props;
-
+	const [refreshApp, setRefreshApp] = useState(true)
+	const refresh = () => setRefreshApp(!refreshApp)
 	return (
-		<AppContext.Provider value={{}}>
+		<AppContext.Provider value={{ refreshApp, refresh }}>
 			<AuthProvider>
 				<EmployeeProvider>
 					{children}

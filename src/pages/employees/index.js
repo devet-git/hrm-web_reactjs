@@ -100,7 +100,7 @@ const Page = () => {
 								</Button>
 							</div>
 						</Stack>
-						<EmployeesSearch />
+						{/* <EmployeesSearch /> */}
 						<EmployeesDataTable data={employeeList} />
 					</Stack>
 				</Container>

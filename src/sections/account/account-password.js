@@ -39,8 +39,8 @@ export const AccountUpdatePassword = () => {
 		<form onSubmit={handleSubmit}>
 			<Card>
 				<CardHeader
-					subheader="Update password"
-					title="Password"
+					title="Change Password"
+				// subheader="Update password"
 				/>
 				<Divider />
 				<CardContent>

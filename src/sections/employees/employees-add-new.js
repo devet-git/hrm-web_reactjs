@@ -12,11 +12,17 @@ import dayjs from 'dayjs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useEmployee } from 'src/hooks/use-employee';
-import { useAppContext } from 'src/contexts/AppContext';
+
 
 
 export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, onSubmit }) {
 	const employee = useEmployee()
+	const firstNameRef = React.useRef(null);
+
+	const handleClearForm = () => {
+		formik.resetForm();
+		firstNameRef.current.focus();
+	}
 	const formik = useFormik({
 		initialValues: {
 			firstName: '',
@@ -24,7 +30,6 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 			address: "",
 			gender: 1,
 			dob: dayjs().add(-20, 'year'),
-			submit: null
 		},
 		validationSchema: Yup.object({
 			firstName: Yup
@@ -81,6 +86,7 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 							label="First name"
 							name='firstName'
 							type="text"
+							inputRef={firstNameRef}
 							error={!!(formik.touched.firstName && formik.errors.firstName)}
 							helperText={formik.touched.firstName && formik.errors.firstName}
 							value={formik.values.firstName}
@@ -148,7 +154,13 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 					</DialogContent>
 					<DialogActions>
 						<Button onClick={onCancel}>Cancel</Button>
-						<Button type='submit'>Create</Button>
+						<Button onClick={handleClearForm}>Clear</Button>
+						<Button
+							type='submit'
+							variant='contained'
+						>
+							Create
+						</Button>
 					</DialogActions>
 				</form>
 			</Dialog>

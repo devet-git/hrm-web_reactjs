@@ -59,7 +59,7 @@ export const AccountProfile = () => {
 						textAlign={'center'}
 
 					>
-						{new Date(auth.currentUser.create_date).toLocaleDateString('en-GB')}
+						Join on {new Date(auth.currentUser.create_date).toLocaleDateString('en-GB')}
 					</Typography>
 				</Box>
 			</CardContent>
