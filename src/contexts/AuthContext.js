@@ -1,7 +1,10 @@
-import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
+import { createContext, useContext, useEffect, useReducer, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import authService from 'src/services/authService';
 import userService from 'src/services/userService';
+import localStorageConst from 'src/constants/localStorageConst';
+import { useRouter } from 'next/router';
+import { isJwtExpired } from 'jwt-check-expiration';
 
 const HANDLERS = {
 	INITIALIZE: 'INITIALIZE',
@@ -45,8 +48,6 @@ const handlers = {
 		};
 	},
 	[HANDLERS.SIGN_OUT]: (state) => {
-		localStorage.removeItem('authenticated')
-		localStorage.removeItem('jwtToken')
 		return {
 			...state,
 			isAuthenticated: false,
@@ -67,6 +68,8 @@ export const AuthProvider = (props) => {
 	const { children } = props;
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const initialized = useRef(false);
+	const [currentUser, setCurrentUser] = useState({})
+	const router = useRouter();
 
 	const initialize = async () => {
 		// Prevent from calling twice in development mode with React.StrictMode enabled
@@ -77,7 +80,12 @@ export const AuthProvider = (props) => {
 		initialized.current = true;
 
 		let isAuthenticated = false;
-
+		try {
+			setCurrentUser(JSON.parse(localStorage.getItem(localStorageConst.CURRENT_USER)))
+		}
+		catch (err) {
+			console.log(err);
+		}
 		try {
 			isAuthenticated = localStorage.getItem('authenticated') === 'true';
 		} catch (err) {
@@ -103,58 +111,50 @@ export const AuthProvider = (props) => {
 		}
 	};
 
-	useEffect(
-		() => {
-			initialize();
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[]
-	);
+	// useEffect(() => {
+	// 	const handleRouteChange = async (url, { shallow }) => {
+	// 		const token = localStorage.getItem(localStorageConst.JWT_TOKEN) || null
+	// 		const isLogin = localStorage.getItem('authenticated') === "true" || false
 
-	/*const skip = () => {
-		try {
-			window.sessionStorage.setItem('authenticated', 'true');
-		} catch (err) {
-			console.error(err);
-		}
+	// 		if (!token || (token && isJwtExpired(token)) || !isLogin) {
+	// 			await signOut()
+	// 			// router.prefetch("/auth/login")
+	// 		}
+	// 	}
+	// 	router.events.on('routeChangeStart', handleRouteChange)
+	// 	// return () => {
+	// 	// 	router.events.off('routeChangeStart', handleRouteChange)
+	// 	// }
+	// }, [router]);
 
-		const user = {
-			id: '5e86809283e28b96d2d38537',
-			avatar: '/assets/avatars/avatar-anika-visser.png',
-			name: 'Anika Visser',
-			email: 'anika.visser@devias.io'
-		};
+	useEffect(() => {
+		initialize();
+	}, []);
 
-		dispatch({
-			type: HANDLERS.SIGN_IN,
-			payload: user
-		});
-	};
-*/
 	const signIn = async (email, password) => {
-		// if (email !== 'demo@devias.io' || password !== 'Password123!') {
-		// 	throw new Error('Please check your email and password');
-
 		const res = await authService.login(email, password);
-		console.log(res);
-		if (res.statusCode === 400) throw new Error('Please check your email and password');
+		// console.log(res);
+		if (!res) throw new Error('Server error!! Please come back later😘');
+		if (!res || res?.statusCode === 400) throw new Error('Please check your email and password');
 
 		try {
 			localStorage.setItem('authenticated', 'true');
-			localStorage.setItem('jwtToken', res.data?.token)
+			localStorage.setItem(localStorageConst.JWT_TOKEN, res.data?.token)
 		} catch (err) {
 			console.error(err);
 		}
-		const user1 = await userService.getInfo(res.data?.userID)
-		console.log(user1);
+		//TODO: GET LOGGING USER DETAIL
+		const userRes = await userService.getInfo(res.data?.userID)
+		setCurrentUser(userRes)
+		localStorage.setItem(localStorageConst.CURRENT_USER, JSON.stringify(userRes))
+		// console.log(userRes);
 
 		const user = {
-			id: user1.id,
+			id: userRes.id,
 			avatar: '/assets/avatars/avatar-anika-visser.png',
-			name: user1.username,
-			email: user1.email,
+			name: userRes.username,
+			email: userRes.email,
 		};
-
 		dispatch({
 			type: HANDLERS.SIGN_IN,
 			payload: user
@@ -165,7 +165,13 @@ export const AuthProvider = (props) => {
 		throw new Error('Sign up is not implemented');
 	};
 
-	const signOut = () => {
+	const signOut = async () => {
+		const isLogout = await authService.logout()
+		if (isLogout) {
+			localStorage.removeItem(localStorageConst.CURRENT_USER)
+			localStorage.removeItem('authenticated')
+			localStorage.removeItem(localStorageConst.JWT_TOKEN)
+		}
 		dispatch({
 			type: HANDLERS.SIGN_OUT
 		});
@@ -175,7 +181,7 @@ export const AuthProvider = (props) => {
 		<AuthContext.Provider
 			value={{
 				...state,
-				// skip,
+				currentUser,
 				signIn,
 				signUp,
 				signOut

@@ -8,20 +8,16 @@ import {
 	Divider,
 	Typography
 } from '@mui/material';
-import { format } from 'date-fns';
-import dayjs from 'dayjs';
-import { useAuth } from 'src/hooks/use-auth';
+import { useEmployee } from 'src/hooks/use-employee';
 
 const user = {
 	avatar: '/assets/avatars/avatar-anika-visser.png',
-	city: 'Los Angeles',
-	country: 'USA',
-	jobTitle: 'Senior Developer',
-	name: 'Anika Visser',
-	timezone: 'GTM-7'
 };
-export const AccountProfile = () => {
-	const auth = useAuth();
+
+export const EmployeeProfile = ({ employeeId }) => {
+	const { employeeList } = useEmployee();
+	const employee = employeeList.find(emp => emp.id === employeeId)
+
 	return (
 		<Card>
 			<CardContent>
@@ -45,7 +41,7 @@ export const AccountProfile = () => {
 						variant="h5"
 						textAlign={'center'}
 					>
-						{auth.currentUser.email}
+						{employee?.firstName} {employee?.lastName}
 					</Typography>
 					{/* <Typography
 						color="text.secondary"
@@ -59,7 +55,7 @@ export const AccountProfile = () => {
 						textAlign={'center'}
 
 					>
-						{new Date(auth.currentUser.create_date).toLocaleDateString('en-GB')}
+						{new Date(employee?.dob).toLocaleDateString('en-GB')}
 					</Typography>
 				</Box>
 			</CardContent>

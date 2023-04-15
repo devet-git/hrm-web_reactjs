@@ -43,13 +43,11 @@ const Page = () => (
 								md={6}
 								lg={8}
 							>
-								<AccountProfileDetails />
-
+								{/* <AccountProfileDetails /> */}
+								<AccountUpdatePassword />
 							</Grid>
-
 						</Grid>
 					</div>
-					<AccountUpdatePassword />
 				</Stack>
 			</Container>
 		</Box>
