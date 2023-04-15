@@ -11,6 +11,8 @@ const endpointConst = {
 	EMPLOYEE: {
 		GET_ALL: "employees",
 		ADD: "employees",
+		UPDATE: (id) => "employees/" + id,
+		DELETE: (id) => "employees/" + id,
 	}
 }
 

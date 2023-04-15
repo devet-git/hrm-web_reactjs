@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { format } from 'date-fns';
-import { Button, IconButton } from '@mui/material';
-import { BiBullseye } from "react-icons/bi"
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tooltip } from '@mui/material';
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai"
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 const columns = [
@@ -28,32 +28,81 @@ const columns = [
 		valueGetter: (params) => format(new Date(params.row.createDate), 'dd/MM/yyyy')
 	},
 	{
-		field: 'detail',
-		headerName: 'Detail',
+		field: 'updatedDate',
+		headerName: 'Date update',
+		description: 'This column has a value getter and is not sortable.',
+		width: 130,
+		valueGetter: (params) => params.row.updateDate && format(new Date(params.row.updateDate), 'dd/MM/yyyy')
+	},
+	{
+		field: 'action',
+		headerName: 'Action',
 		type: 'actions',
-		renderCell: (params) => (<SeeEmployeeDetail empId={params.row.id} />),
+		renderCell: (params) => (<Actions empId={params.row.id} />),
 	},
 ];
-const SeeEmployeeDetail = ({ empId }) => {
+const Actions = ({ empId }) => {
 	const router = useRouter()
-	const handleClick = () => {
+	const [isOpenDialog, setIsOpenDialog] = React.useState(false)
+
+	const handleUpdate = () => {
 		router.push(`employees/${empId}`)
 	}
+	const handleDelete = () => {
+		setIsOpenDialog(true)
+	}
+	const handleCloseDialog = () => setIsOpenDialog(false)
+
 	return (
-		<IconButton onClick={handleClick}>
-			<BiBullseye />
-		</IconButton>
+		<>
+			<Tooltip title="Update">
+				<IconButton onClick={handleUpdate}>
+					<AiOutlineEdit color='blue' />
+				</IconButton>
+			</Tooltip>
+			<IconButton onClick={() => setIsOpenDialog(true)}>
+				<AiOutlineDelete color='red' />
+			</IconButton>
+			<Dialog
+				open={isOpenDialog}
+				onClose={handleCloseDialog}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">
+					{"Are you sure delete this employee?"}
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						You should consider carefully before deleting your employee
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseDialog}>Cancel</Button>
+					<Button onClick={handleDelete}
+						autoFocus>
+						Delete
+					</Button>
+				</DialogActions>
+			</Dialog>
+		</>
 	)
 }
+
 export default function EmployeesDataTable({ data }) {
 	return (
 		<div style={{ height: 350, width: '100%' }}>
 			<DataGrid
+
 				rows={data || []}
 				columns={columns}
 				// pageSize={5}
 				// rowsPerPageOptions={[5, 10, 20]}
 				checkboxSelection
+				onRowSelectionModelChange={ids => {
+					const selectedRowsData = ids.map((id) => data.find((row) => row.id === id));
+					console.log(selectedRowsData)
+				}}
 			/>
 			<Button
 				variant='outlined'

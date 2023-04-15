@@ -42,7 +42,7 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 		}),
 		onSubmit: async (values, helpers) => {
 			try {
-				await employee.create({
+				await employee.createEmployee({
 					firstName: values.firstName,
 					lastName: values.lastName,
 					address: values.address,
