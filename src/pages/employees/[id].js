@@ -23,16 +23,16 @@ const Page = () => {
 				component="main"
 				sx={{
 					flexGrow: 1,
-					py: 8
+					py: 3
 				}}
 			>
 				<Container maxWidth="lg">
 					<Stack spacing={3}>
-						<div>
+						{/* <div>
 							<Typography variant="h5">
 								Employee Info
 							</Typography>
-						</div>
+						</div> */}
 						<div>
 							<Grid
 								container

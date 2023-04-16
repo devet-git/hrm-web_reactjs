@@ -8,6 +8,8 @@ import {
 	Divider,
 	Typography
 } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useApp } from 'src/hooks/use-app';
 import { useEmployee } from 'src/hooks/use-employee';
 
 const user = {
@@ -16,7 +18,14 @@ const user = {
 
 export const EmployeeProfile = ({ employeeId }) => {
 	const { employeeList } = useEmployee();
-	const employee = employeeList.find(emp => emp.id === employeeId)
+	const [employee, setEmployee] = useState(employeeList.find(emp => emp.id === employeeId) || [])
+	// const employee = employeeList.find(emp => emp.id === employeeId)
+	const { refreshApp } = useApp();
+
+	useEffect(() => {
+		const newData = employeeList.find(emp => emp.id === employeeId)
+		setEmployee(newData)
+	}, [employeeId, employeeList, refreshApp])
 
 	return (
 		<Card>
