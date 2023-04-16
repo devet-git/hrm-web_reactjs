@@ -6,7 +6,6 @@ import { useEmployee } from "src/hooks/use-employee";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { EmployeeProfile } from "src/sections/employees/EmployeeProfile";
 import { EmployeeProfileDetails } from "src/sections/employees/EmployeeProfileDetails";
-import { AddInsurance } from "src/sections/employees/addInsurance";
 
 const Page = () => {
   const router = useRouter();
