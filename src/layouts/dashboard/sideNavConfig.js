@@ -7,14 +7,43 @@ import UserPlusIcon from '@heroicons/react/24/solid/UserPlusIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import { SvgIcon } from '@mui/material';
+import { BsFileEarmarkFill } from "react-icons/bs"
 
-export const items = [
+
+export const sideNavConfig = [
 	{
 		title: 'Overview',
 		path: '/',
 		icon: (
 			<SvgIcon fontSize="small">
 				<ChartBarIcon />
+			</SvgIcon>
+		)
+	},
+	{
+		title: 'Employees',
+		path: '/employees',
+		icon: (
+			<SvgIcon fontSize="small">
+				<UsersIcon />
+			</SvgIcon>
+		)
+	},
+	{
+		title: 'File',
+		path: '/files',
+		icon: (
+			<SvgIcon fontSize="small">
+				<BsFileEarmarkFill />
+			</SvgIcon>
+		)
+	},
+	{
+		title: 'My Account',
+		path: '/account',
+		icon: (
+			<SvgIcon fontSize="small">
+				<UserIcon />
 			</SvgIcon>
 		)
 	},
@@ -45,24 +74,6 @@ export const items = [
 	// 		</SvgIcon>
 	// 	)
 	// },
-	{
-		title: 'Employees',
-		path: '/employees',
-		icon: (
-			<SvgIcon fontSize="small">
-				<UsersIcon />
-			</SvgIcon>
-		)
-	},
-	{
-		title: 'My Account',
-		path: '/account',
-		icon: (
-			<SvgIcon fontSize="small">
-				<UserIcon />
-			</SvgIcon>
-		)
-	},
 	// {
 	// 	title: 'Settings',
 	// 	path: '/settings',
