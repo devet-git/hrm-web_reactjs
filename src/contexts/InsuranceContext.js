@@ -13,13 +13,30 @@ export const InsuranceProvider = (props) => {
     setIsLoading(true);
     let res = await insuranceService.add({ number, issuedDate, issuedPlace, employeeId });
     if (res && res.statusCode === 200) {
-      toast("Add employee successfully", { type: "success" });
-    } else toast("Add failed employee", { type: "error" });
+      toast("Add insurance successfully", { type: "success" });
+    } else toast("Add failed insurance", { type: "error" });
     console.log(res);
     setIsLoading(false);
   };
+  const getAllInsurance = async () => {
+    setIsLoading(true);
+    let res = await insuranceService.getAll();
+    // console.log(res);
+    setIsLoading(false);
+    return res.data;
+  };
+  const updateInsurance = async (id, { number, issuedDate, issuedPlace }) => {
+    setIsLoading(true);
+    let res = await insuranceService.update(id, { number, issuedDate, issuedPlace });
+    if (res && res.statusCode === 200) {
+      toast("Update insurance info successfully", { type: "success" });
+      refresh();
+    } else toast("Update failed insurance", { type: "error" });
+  };
   return (
-    <InsuranceContext.Provider value={{ isLoading, addInsurance }}>
+    <InsuranceContext.Provider
+      value={{ isLoading, addInsurance, getAllInsurance, updateInsurance }}
+    >
       {children}
     </InsuranceContext.Provider>
   );

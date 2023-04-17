@@ -20,14 +20,14 @@ import dayjs from "dayjs";
 import * as Yup from "yup";
 import { useInsuranceContext } from "src/contexts/InsuranceContext";
 
-export const AddInsurance = ({ employeeId }) => {
+export const UpdateInsurance = ({ info }) => {
   const insuranceContext = useInsuranceContext();
 
   const formik = useFormik({
     initialValues: {
-      number: "",
-      issuedDate: dayjs(new Date()),
-      issuedPlace: "",
+      number: info.number,
+      issuedDate: dayjs(new Date(info.issuedDate)),
+      issuedPlace: info.issuedPlace,
     },
     validationSchema: Yup.object({
       number: Yup.string().max(255).required("Number is required"),
@@ -36,11 +36,10 @@ export const AddInsurance = ({ employeeId }) => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await insuranceContext.addInsurance({
+        await insuranceContext.updateInsurance(info.id, {
           number: values.number,
           issuedDate: values.issuedDate.format("DD/MM/YYYY"),
           issuedPlace: values.issuedPlace,
-          employeeId,
         });
       } catch (err) {
         helpers.setStatus({ success: false });
@@ -103,7 +102,7 @@ export const AddInsurance = ({ employeeId }) => {
         <Divider />
         <CardActions sx={{ justifyContent: "flex-end" }}>
           <Button variant="contained" type="submit">
-            Add
+            Update
           </Button>
         </CardActions>
       </Card>

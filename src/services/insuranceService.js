@@ -16,6 +16,26 @@ const insuranceService = {
       return error?.response?.data;
     }
   },
+  async getAll() {
+    try {
+      const res = await apiConfig.get(endpointConst.INSURANCE.GET_ALL);
+      return res.data;
+    } catch (error) {
+      return error?.response?.data;
+    }
+  },
+  async update(id, { number, issuedDate, issuedPlace }) {
+    try {
+      const res = await apiConfig.put(endpointConst.INSURANCE.UPDATE(id), {
+        number,
+        issuedDate,
+        issuedPlace,
+      });
+      return res.data;
+    } catch (error) {
+      return error?.response?.data;
+    }
+  },
 };
 
 export default insuranceService;
