@@ -16,8 +16,6 @@ const endpointConst = {
   },
   INSURANCE: {
     ADD: "insurances",
-    GET_ALL: "insurances",
-    UPDATE: (id) => "insurances/" + id,
   },
 };
 
