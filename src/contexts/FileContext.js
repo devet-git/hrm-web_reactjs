@@ -43,8 +43,17 @@ export const FileProvider = (props) => {
 		} else toast("Upload failed", { type: "error" })
 		setIsLoading(false)
 	}
+	const deleteFile = async (id) => {
+		setIsLoading(true)
+		let res = await fileService.delete(id);
+		if (res && res.statusCode === 200) {
+			toast("Delete successfully", { type: "success" })
+			refresh();
+		} else toast("Delete failed", { type: "error" })
+		setIsLoading(false)
+	}
 	return (
-		<FileContext.Provider value={{ isLoading, fileList, download, upload }}>
+		<FileContext.Provider value={{ isLoading, fileList, download, upload, deleteFile }}>
 			{children}
 		</FileContext.Provider>
 	)

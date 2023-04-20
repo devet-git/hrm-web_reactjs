@@ -16,7 +16,8 @@ const endpointConst = {
 	},
 	FILE: {
 		GET_ALL: "files",
-		UPLOAD: "files"
+		UPLOAD: "files",
+		DELETE: (id) => "files/" + id,
 	},
 }
 

@@ -15,8 +15,6 @@ const fileService = {
 			let formData = new FormData()
 			filesToUpload.forEach((file) => formData.append("files", file))
 			const res = await apiConfig.post(endpointConst.FILE.UPLOAD, formData,
-				// { params: { files: filesToUpload } },
-				// { params: filesToUpload },
 				{
 					headers: {
 						"Content-Type": "multipart/form-data",
@@ -42,7 +40,14 @@ const fileService = {
 			return false
 		}
 	},
-
+	async delete(id) {
+		try {
+			const res = await apiConfig.delete(endpointConst.FILE.DELETE(id))
+			return res.data
+		} catch (error) {
+			return error.response?.data || null
+		}
+	},
 
 }
 

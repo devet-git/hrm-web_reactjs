@@ -22,7 +22,7 @@ const Page = () => {
 		<>
 			<FileUploadFeature
 				isOpen={isOpenUploadDialog}
-				// onClose={() => setIsOpenAddNewDialog(false)}
+				onClose={() => setIsOpenUploadDialog(false)}
 				onCancel={() => setIsOpenUploadDialog(false)}
 			/>
 

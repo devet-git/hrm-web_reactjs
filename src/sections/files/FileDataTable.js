@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { DataGrid, GridLogicOperator, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridLogicOperator } from '@mui/x-data-grid';
 import { format } from 'date-fns';
 import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, OutlinedInput, SvgIcon, Tooltip } from '@mui/material';
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai"
 import { HiOutlineDownload } from "react-icons/hi"
 import { useRouter } from 'next/router';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
-import { useEmployeeContext } from 'src/contexts/EmployeeContext';
 import { useFileContext } from 'src/contexts/FileContext';
 
 const columns = [
@@ -43,14 +42,12 @@ const columns = [
 const Actions = ({ fileId, downloadUrl, fileName }) => {
 	const router = useRouter()
 	const [isOpenDialog, setIsOpenDialog] = React.useState(false)
-	const { deleteEmployee } = useEmployeeContext();
 	const fileContext = useFileContext();
-	const handleUpdate = () => {
-		router.push(`employees/${fileId}`)
-	}
+
 	const handleDelete = async () => {
-		await deleteEmployee(fileId);
-		setIsOpenDialog(true)
+		console.log(fileId);
+		await fileContext.deleteFile(fileId)
+		setIsOpenDialog(false)
 	}
 	const handleDownload = async () => {
 		await fileContext.download(downloadUrl, fileName)
@@ -77,11 +74,11 @@ const Actions = ({ fileId, downloadUrl, fileName }) => {
 				aria-describedby="alert-dialog-description"
 			>
 				<DialogTitle id="alert-dialog-title">
-					{"Are you sure delete this employee?"}
+					{"Are you sure delete this file?"}
 				</DialogTitle>
 				<DialogContent>
 					<DialogContentText id="alert-dialog-description">
-						You should consider carefully before deleting your employee
+						You should consider carefully before deleting your file
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
