@@ -10,21 +10,22 @@ import { useEmployee } from 'src/hooks/use-employee';
 import FileDataTable from 'src/sections/files/FileDataTable';
 import { useFileContext } from 'src/contexts/FileContext';
 import EmployeeAddNewFormDialog from 'src/sections/employees/employees-add-new';
-
+import FileUploadFeature from 'src/sections/files/FileUploadFeature';
 
 
 const Page = () => {
 	// const [employees, setEmployees] = useState(null)
-	const [isOpenAddNewDialog, setIsOpenAddNewDialog] = useState(false)
+	const [isOpenUploadDialog, setIsOpenUploadDialog] = useState(false)
 	const { fileList } = useFileContext();
 
 	return (
 		<>
-			<EmployeeAddNewFormDialog
-				isOpen={isOpenAddNewDialog}
+			<FileUploadFeature
+				isOpen={isOpenUploadDialog}
 				// onClose={() => setIsOpenAddNewDialog(false)}
-				onCancel={() => setIsOpenAddNewDialog(false)}
+				onCancel={() => setIsOpenUploadDialog(false)}
 			/>
+
 			<Head>
 				<title>
 					Employees | Devet HRM
@@ -83,7 +84,7 @@ const Page = () => {
 										</SvgIcon>
 									)}
 									variant="contained"
-									onClick={() => setIsOpenAddNewDialog(true)}
+									onClick={() => setIsOpenUploadDialog(true)}
 								>
 									Add
 								</Button>

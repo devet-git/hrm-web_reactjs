@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useApp } from "src/hooks/use-app";
 import fileService from "src/services/fileService";
 
@@ -33,8 +34,17 @@ export const FileProvider = (props) => {
 		refresh()
 		setIsLoading(false)
 	}
+	const upload = async (files) => {
+		setIsLoading(true)
+		let res = await fileService.upload(files);
+		if (res && res.statusCode === 200) {
+			toast("Upload successfully", { type: "success" })
+			refresh();
+		} else toast("Upload failed", { type: "error" })
+		setIsLoading(false)
+	}
 	return (
-		<FileContext.Provider value={{ isLoading, fileList, download }}>
+		<FileContext.Provider value={{ isLoading, fileList, download, upload }}>
 			{children}
 		</FileContext.Provider>
 	)

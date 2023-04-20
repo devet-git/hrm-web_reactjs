@@ -16,6 +16,7 @@ const endpointConst = {
 	},
 	FILE: {
 		GET_ALL: "files",
+		UPLOAD: "files"
 	},
 }
 

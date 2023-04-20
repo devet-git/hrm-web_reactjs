@@ -10,6 +10,24 @@ const fileService = {
 			return error.response?.data || null
 		}
 	},
+	async upload(filesToUpload) {
+		try {
+			let formData = new FormData()
+			filesToUpload.forEach((file) => formData.append("files", file))
+			const res = await apiConfig.post(endpointConst.FILE.UPLOAD, formData,
+				// { params: { files: filesToUpload } },
+				// { params: filesToUpload },
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					}
+				}
+			)
+			return res.data
+		} catch (error) {
+			return error.response?.data || null
+		}
+	},
 	async download(url, fileName) {
 		try {
 			const res = await apiConfig.get(url, { responseType: "blob" })
