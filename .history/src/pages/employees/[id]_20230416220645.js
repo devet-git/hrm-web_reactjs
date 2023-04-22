@@ -6,29 +6,11 @@ import { useEmployee } from "src/hooks/use-employee";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { EmployeeProfile } from "src/sections/employees/EmployeeProfile";
 import { EmployeeProfileDetails } from "src/sections/employees/EmployeeProfileDetails";
-import { AddInsurance } from "src/sections/employees/addInsurance";
-import { useEffect, useState } from "react";
-import { useInsuranceContext } from "src/contexts/InsuranceContext";
-import employeeService from "src/services/employeeService";
-import { UpdateInsurance } from "src/sections/employees/updateInsurance";
 
 const Page = () => {
   const router = useRouter();
   const { id } = router.query;
-  const insuranceContext = useInsuranceContext();
-  const [insurancee, setInsurancee] = useState();
-  useEffect(() => {
-    (async () => {
-      const insurances = await insuranceContext.getAllInsurance();
-      console.log(insurances);
-      const insuranceId = insurances.find((res) => res.employeeId === id);
-      console.log(insuranceId);
-      setInsurancee(insuranceId);
-      if (insurancee === undefined) {
-        return;
-      }
-    })();
-  }, []);
+
   return (
     <>
       <Head>
@@ -57,11 +39,7 @@ const Page = () => {
                   <EmployeeProfileDetails employeeId={id} />
                 </Grid>
                 <Grid xs={12} md={6} lg={8} item>
-                  {insurancee ? (
-                    <UpdateInsurance info={insurancee} />
-                  ) : (
-                    <AddInsurance employeeId={id} />
-                  )}
+                  <AddInsurance employeeId={id} />
                 </Grid>
               </Grid>
             </div>

@@ -13,17 +13,7 @@ const endpointConst = {
 		ADD: "employees",
 		UPDATE: (id) => "employees/" + id,
 		DELETE: (id) => "employees/" + id,
-	},
-	FILE: {
-		GET_ALL: "files",
-		UPLOAD: "files",
-		DELETE: (id) => "files/" + id,
-	},
-	INSURANCE: {
-		ADD: "insurances",
-		GET_ALL: "insurances",
-		UPDATE: (id) => "insurances/" + id,
-	},
+	}
 }
 
 export default endpointConst;
