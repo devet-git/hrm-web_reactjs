@@ -119,7 +119,7 @@ export const AuthProvider = (props) => {
 
 			if (!token || (token && isJwtExpired(token)) || isLogin !== "true") {
 				await signOut()
-				// router.prefetch("/auth/login")
+				// router.reload()
 			}
 		})()
 	}, [refreshApp]);

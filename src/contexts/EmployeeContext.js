@@ -13,7 +13,7 @@ export function EmployeeProvider(props) {
 	useEffect(() => {
 		(async () => {
 			const res = await employeeService.getAll()
-			setEmployeeList(res.data || [])
+			setEmployeeList(res?.data || [])
 		})()
 	}, [children, refreshApp])
 
