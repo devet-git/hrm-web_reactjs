@@ -12,7 +12,7 @@ const userService = {
 	},
 	async changePassword(currentPassword, newPassword) {
 		try {
-			const res = await apiConfig.post(endpointConst.USER.CHANGE_PASSWORD, { currentPassword: currentPassword, newPassword: newPassword })
+			const res = await apiConfig.post(endpointConst.USER.CHANGE_PASSWORD, { currentPassword, newPassword })
 			return res.data
 		} catch (error) {
 			return error.response.data

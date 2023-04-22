@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { toast } from "react-toastify";
 import userService from "src/services/userService";
 
 export const UserContext = createContext(null)
@@ -10,7 +11,10 @@ export const UserProvider = (props) => {
 	const changePassword = async (currentPw, newPw) => {
 		setIsLoading(true)
 		let res = await userService.changePassword(currentPw, newPw)
-		console.log(res);
+		if (res && res.statusCode === 200) {
+			toast("Update password successfully", { type: "success" })
+		}
+		else toast("Update password failed. Let's check your current password", { type: "error" })
 		setIsLoading(false)
 	}
 	return (
