@@ -6,6 +6,7 @@ import localStorageConst from 'src/constants/localStorageConst';
 import { useRouter } from 'next/router';
 import { isJwtExpired } from 'jwt-check-expiration';
 import { useAppContext } from './AppContext';
+import { toast } from 'react-toastify';
 
 const HANDLERS = {
 	INITIALIZE: 'INITIALIZE',
@@ -159,9 +160,16 @@ export const AuthProvider = (props) => {
 		refresh()
 	};
 
-	const signUp = async (email, name, password) => {
-		throw new Error('Sign up is not implemented');
-		refresh()
+	const signUp = async (email, username, password) => {
+		let res = await authService.register({ email, username, password })
+		if (res && res.statusCode === 200) {
+			toast("Register successfully", { type: "success" })
+			refresh();
+		}
+		else if (res && res.statusCode === 400) {
+			throw new Error(res.errors);
+		}
+		else toast("Register failed", { type: "error" })
 	};
 
 	const signOut = async () => {
