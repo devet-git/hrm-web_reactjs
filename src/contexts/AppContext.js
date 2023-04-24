@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { FileProvider } from "./FileContext";
 import { InsuranceProvider } from "./InsuranceContext";
+import { UserProvider } from "./UserContext";
 const { createContext, useContext, useEffect, useState } = require("react");
 
 export const AppContext = createContext(null);
@@ -16,13 +17,15 @@ export function AppProvider(props) {
 	return (
 		<AppContext.Provider value={{ refreshApp, refresh }}>
 			<AuthProvider>
-				<EmployeeProvider>
-					<FileProvider>
-						<InsuranceProvider>
-							{children}
-						</InsuranceProvider>
-					</FileProvider>
-				</EmployeeProvider>
+				<UserProvider>
+					<EmployeeProvider>
+						<FileProvider>
+							<InsuranceProvider>
+								{children}
+							</InsuranceProvider>
+						</FileProvider>
+					</EmployeeProvider>
+				</UserProvider>
 			</AuthProvider>
 		</AppContext.Provider>
 	)
