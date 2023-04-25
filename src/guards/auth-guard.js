@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useAuthContext } from 'src/contexts/AuthContext';
 import { useApp } from 'src/hooks/use-app';
+import localStorageConst from 'src/constants/localStorageConst';
+import { isJwtExpired } from 'jwt-check-expiration';
 
 export const AuthGuard = (props) => {
 	const { children } = props;
@@ -14,6 +16,7 @@ export const AuthGuard = (props) => {
 	// Only do authentication check on component mount.
 	// This flow allows you to manually redirect the user after sign-out, otherwise this will be
 	// triggered and will automatically redirect to sign-in page.
+	const jwtToken = localStorage.getItem(localStorageConst.JWT_TOKEN)
 
 	useEffect(() => {
 		if (!router.isReady) {
@@ -27,7 +30,7 @@ export const AuthGuard = (props) => {
 
 		ignore.current = true;
 
-		if (!isAuthenticated) {
+		if (!isAuthenticated || !jwtToken || isJwtExpired(jwtToken)) {
 			console.log('Not authenticated, redirecting');
 			router
 				.replace({

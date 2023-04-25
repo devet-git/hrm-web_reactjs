@@ -20,7 +20,6 @@ const Page = () => {
 	useEffect(() => {
 		(async () => {
 			const insurances = await insuranceContext.getAllInsurance();
-			console.log(insurances);
 			const insuranceId = insurances.find((res) => res.employeeId === id);
 			console.log(insuranceId);
 			setInsurancee(insuranceId);

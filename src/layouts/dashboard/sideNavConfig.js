@@ -21,8 +21,17 @@ export const sideNavConfig = [
 		)
 	},
 	{
-		title: 'Employees',
+		title: 'Employee',
 		path: '/employees',
+		icon: (
+			<SvgIcon fontSize="small">
+				<UsersIcon />
+			</SvgIcon>
+		)
+	},
+	{
+		title: 'Department',
+		path: '/departments',
 		icon: (
 			<SvgIcon fontSize="small">
 				<UsersIcon />

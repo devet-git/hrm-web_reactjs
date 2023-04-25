@@ -24,6 +24,12 @@ const endpointConst = {
 		GET_ALL: "insurances",
 		UPDATE: (id) => "insurances/" + id,
 	},
+	DEPARTMENT: {
+		ADD: "departments",
+		GET_ALL: "departments",
+		UPDATE: (id) => "departments/" + id,
+		DELETE: (id) => "departments/" + id,
+	},
 }
 
 export default endpointConst;
