@@ -9,8 +9,11 @@ import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { useFileContext } from 'src/contexts/FileContext';
 
 const columns = [
-
-	{ field: 'name', headerName: 'File name', width: '300', filterable: true },
+	{
+		headerName: 'Serial', filterable: false, width: 70,
+		renderCell: (params) => params.api.getRowIndexRelativeToVisibleRows(params.row.id) + 1,
+	},
+	{ field: 'name', headerName: 'File name', width: '500', filterable: true },
 	{
 		field: 'size', headerName: 'Size', width: '130', filterable: true,
 		valueGetter: (params) => parseFloat(params.row.size * Math.pow(10, -6)).toFixed(2) + " MB"

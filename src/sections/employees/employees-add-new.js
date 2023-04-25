@@ -81,6 +81,7 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 					</DialogContentText> */}
 
 						<TextField
+							required
 							autoFocus
 							margin="dense"
 							label="First name"
@@ -95,6 +96,7 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 							fullWidth
 						/>
 						<TextField
+							required
 							margin="dense"
 							label="Last name"
 							name='lastName'
@@ -107,6 +109,7 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 							fullWidth
 						/>
 						<TextField
+							required
 							margin="dense"
 							label="Address"
 							name='address'

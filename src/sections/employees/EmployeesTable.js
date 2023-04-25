@@ -9,9 +9,12 @@ import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { useEmployeeContext } from 'src/contexts/EmployeeContext';
 
 const columns = [
-
-	{ field: 'firstName', headerName: 'First name', width: 130, filterable: true },
-	{ field: 'lastName', headerName: 'Last name', width: 130, filterable: true },
+	{
+		headerName: 'Serial', filterable: false, width: 70,
+		renderCell: (params) => params.api.getRowIndexRelativeToVisibleRows(params.row.id) + 1,
+	},
+	{ field: 'firstName', headerName: 'First name', width: 100, filterable: true },
+	{ field: 'lastName', headerName: 'Last name', width: 200, filterable: true },
 	{
 		field: 'gender', headerName: 'Gender', width: 100,
 		valueGetter: (params) => {

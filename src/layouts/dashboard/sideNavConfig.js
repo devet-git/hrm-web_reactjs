@@ -8,6 +8,7 @@ import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import { SvgIcon } from '@mui/material';
 import { BsFileEarmarkFill } from "react-icons/bs"
+import { MdHomeWork } from "react-icons/md"
 
 
 export const sideNavConfig = [
@@ -21,11 +22,20 @@ export const sideNavConfig = [
 		)
 	},
 	{
-		title: 'Employees',
+		title: 'Employee',
 		path: '/employees',
 		icon: (
 			<SvgIcon fontSize="small">
 				<UsersIcon />
+			</SvgIcon>
+		)
+	},
+	{
+		title: 'Department',
+		path: '/departments',
+		icon: (
+			<SvgIcon fontSize="small">
+				<MdHomeWork />
 			</SvgIcon>
 		)
 	},
