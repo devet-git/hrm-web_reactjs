@@ -1,12 +1,14 @@
-import * as React from 'react';
 import { DataGrid, GridLogicOperator, GridToolbar } from '@mui/x-data-grid';
 import { format } from 'date-fns';
 import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, OutlinedInput, SvgIcon, Tooltip } from '@mui/material';
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai"
+import { FiMail } from "react-icons/fi"
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { useEmployeeContext } from 'src/contexts/EmployeeContext';
+import EmployeeSendMailFormDialog from './EmployeeSendMail';
+import { useState } from 'react';
 
 const columns = [
 	{
@@ -45,13 +47,15 @@ const columns = [
 		field: 'action',
 		headerName: 'Action',
 		type: 'actions',
+		width: 150,
 		renderCell: (params) => (<Actions empId={params.row.id} />),
 	},
 ];
 
 const Actions = ({ empId }) => {
 	const router = useRouter()
-	const [isOpenDialog, setIsOpenDialog] = React.useState(false)
+	const [isOpenConfirmDeleteDialog, setIsOpenConfirmDeleteDialog] = useState(false)
+	const [isOpenSendMailDialog, setIsOpenSendMailDialog] = useState(false)
 	const { deleteEmployee } = useEmployeeContext();
 
 	const handleUpdate = () => {
@@ -59,10 +63,36 @@ const Actions = ({ empId }) => {
 	}
 	const handleDelete = async () => {
 		await deleteEmployee(empId);
-		setIsOpenDialog(true)
+		setIsOpenConfirmDeleteDialog(true)
 	}
-	const handleCloseDialog = () => setIsOpenDialog(false)
+	const handleSendMail = async () => setIsOpenSendMailDialog(true)
 
+	const handleCloseDialog = () => setIsOpenConfirmDeleteDialog(false)
+
+	const DeleteConfirmDialog = () => (
+		<Dialog
+			open={isOpenConfirmDeleteDialog}
+			onClose={handleCloseDialog}
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+		>
+			<DialogTitle id="alert-dialog-title">
+				{"Are you sure delete this employee?"}
+			</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-description">
+					You should consider carefully before deleting your employee
+				</DialogContentText>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={handleCloseDialog}>Cancel</Button>
+				<Button onClick={handleDelete}
+					autoFocus>
+					Delete
+				</Button>
+			</DialogActions>
+		</Dialog>
+	)
 	return (
 		<>
 			<Tooltip title="Update">
@@ -70,38 +100,26 @@ const Actions = ({ empId }) => {
 					<AiOutlineEdit />
 				</IconButton>
 			</Tooltip>
-			<IconButton onClick={() => setIsOpenDialog(true)}>
+			<IconButton onClick={() => setIsOpenConfirmDeleteDialog(true)}>
 				<AiOutlineDelete />
 			</IconButton>
-			<Dialog
-				open={isOpenDialog}
-				onClose={handleCloseDialog}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description"
-			>
-				<DialogTitle id="alert-dialog-title">
-					{"Are you sure delete this employee?"}
-				</DialogTitle>
-				<DialogContent>
-					<DialogContentText id="alert-dialog-description">
-						You should consider carefully before deleting your employee
-					</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleCloseDialog}>Cancel</Button>
-					<Button onClick={handleDelete}
-						autoFocus>
-						Delete
-					</Button>
-				</DialogActions>
-			</Dialog>
+			<Tooltip title="Send mail">
+				<IconButton onClick={handleSendMail}>
+					<FiMail />
+				</IconButton>
+			</Tooltip>
+			<EmployeeSendMailFormDialog
+				isOpen={isOpenSendMailDialog}
+				onCancel={() => setIsOpenSendMailDialog(false)}
+			/>
+			<DeleteConfirmDialog />
 		</>
 	)
 }
 
 
 export default function EmployeesDataTable({ data }) {
-	const [searchValue, setSearchValue] = React.useState("")
+	const [searchValue, setSearchValue] = useState("")
 
 	const EmployeeSearch = () => {
 		return (

@@ -30,6 +30,9 @@ const endpointConst = {
 		UPDATE: (id) => "departments/" + id,
 		DELETE: (id) => "departments/" + id,
 	},
+	MAIL: {
+		SEND: "mails",
+	},
 }
 
 export default endpointConst;

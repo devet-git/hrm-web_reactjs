@@ -16,7 +16,6 @@ const FileUploadFeature = ({ isOpen, onClose, onCancel }) => {
 		filesToUpload.length != 0 && await fileContext.upload(filesToUpload)
 	}
 
-
 	return (
 		<Dialog
 			open={isOpen}
@@ -24,29 +23,25 @@ const FileUploadFeature = ({ isOpen, onClose, onCancel }) => {
 			scroll='body'
 		>
 			<DialogTitle>Upload files</DialogTitle>
-			{/* <DialogContent> */}
 			<FileUpload
 				style={{ color: "red" }}
-
 				multiFile={true}
 				title=""
 				header="Drag or Drop"
-				// showPlaceholderImage={false}
 				BannerProps={{ elevation: 24 }}
-				// maxFilesContainerHeight={100}
-
 				buttonLabel="Browser"
 				onFilesChange={handleFilesChange}
 				maxFileSize={15}
-				// onContextReady={(context) => { }}
 				PlaceholderImageDimension={{
 					xs: { width: 128, height: 128 },
 					sm: { width: 128, height: 128 },
 					md: { width: 164, height: 164 },
 					lg: { width: 256, height: 256 }
 				}}
+			// showPlaceholderImage={false}
+			// maxFilesContainerHeight={100}
+			// onContextReady={(context) => { }}
 			/>
-			{/* </DialogContent> */}
 			<DialogActions>
 				<Button onClick={onCancel}>Cancel</Button>
 				<Button
@@ -56,7 +51,7 @@ const FileUploadFeature = ({ isOpen, onClose, onCancel }) => {
 					Upload
 				</Button>
 			</DialogActions>
-		</Dialog >
+		</Dialog>
 	)
 }
 

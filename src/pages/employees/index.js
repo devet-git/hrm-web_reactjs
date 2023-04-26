@@ -9,7 +9,7 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { EmployeesSearch } from 'src/sections/employees/emplyees-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 import employeeService from 'src/services/employeeService';
-import EmployeesDataTable from 'src/sections/employees/EmployeesTable';
+import EmployeesDataTable from 'src/sections/employees/EmployeesDataTable';
 import EmployeeAddNewFormDialog from 'src/sections/employees/employees-add-new';
 import { useEmployeeContext } from 'src/contexts/EmployeeContext';
 import { useEmployee } from 'src/hooks/use-employee';

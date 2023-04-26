@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useApp } from "src/hooks/use-app";
 import employeeService from "src/services/employeeService";
+import mailService from "src/services/mailService";
 
 export const EmployeeContext = createContext(null)
 
@@ -26,7 +27,6 @@ export function EmployeeProvider(props) {
 			refresh();
 		}
 		else toast("Add failed employee", { type: "error" })
-		// console.log(res);
 	}
 	const updateEmployee = async (id, { firstName, lastName, gender, address, dob }) => {
 		const res = await employeeService.update(id, { firstName, lastName, gender, address, dob })
@@ -35,7 +35,6 @@ export function EmployeeProvider(props) {
 			refresh();
 		}
 		else toast("Update failed employee", { type: "error" })
-		// console.log("EMP UPDATE", res);
 	}
 	const deleteEmployee = async (id) => {
 		const res = await employeeService.delete(id);
@@ -44,10 +43,17 @@ export function EmployeeProvider(props) {
 			refresh();
 		}
 		else toast("Delete employee failed", { type: "error" })
-		// console.log("EMP UPDATE", res);
+	}
+	const sendMail = async ({ emails, subject, content, files }) => {
+		const res = await mailService.send({ emails, subject, content, files });
+		if (res && res.statusCode === 200) {
+			toast("Send mail successfully", { type: "success" })
+			refresh();
+		}
+		else toast("Send mail failed", { type: "error" })
 	}
 	return (
-		<EmployeeContext.Provider value={{ createEmployee, updateEmployee, deleteEmployee, employeeList }}>
+		<EmployeeContext.Provider value={{ sendMail, createEmployee, updateEmployee, deleteEmployee, employeeList }}>
 			{children}
 		</EmployeeContext.Provider>
 	)
