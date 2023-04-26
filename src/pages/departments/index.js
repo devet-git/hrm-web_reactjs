@@ -10,7 +10,7 @@ import { EmployeesSearch } from 'src/sections/employees/emplyees-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 import employeeService from 'src/services/employeeService';
 import EmployeesDataTable from 'src/sections/employees/EmployeesDataTable';
-import EmployeeAddNewFormDialog from 'src/sections/employees/employees-add-new';
+import EmployeeAddNewFormDialog from 'src/sections/employees/EmployeeAddNew';
 import { useEmployeeContext } from 'src/contexts/EmployeeContext';
 import { useEmployee } from 'src/hooks/use-employee';
 import DepartmentsDataTable from 'src/sections/departments/DepartmentsDataTable';

@@ -34,6 +34,7 @@ export const EmployeeProfileDetails = ({ employeeId }) => {
 			address: employeeData?.address,
 			dob: dayjs(new Date(employeeData?.dob)),
 			gender: employeeData?.gender,
+			email: employeeData?.email,
 		},
 		validationSchema: Yup.object({
 			firstName: Yup
@@ -168,7 +169,22 @@ export const EmployeeProfileDetails = ({ employeeId }) => {
 										<MenuItem value={2}>Other</MenuItem>
 									</Select>
 								</FormControl>
-
+							</Grid>
+							<Grid
+								xs={12}
+								md={6}
+							>
+								<TextField
+									required
+									fullWidth
+									label="Email"
+									name="email"
+									error={!!(formik.touched.email && formik.errors.email)}
+									helperText={formik.touched.email && formik.errors.email}
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+									value={formik.values.email}
+								/>
 							</Grid>
 						</Grid>
 					</Box>

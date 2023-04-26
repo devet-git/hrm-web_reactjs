@@ -19,8 +19,8 @@ export function EmployeeProvider(props) {
 	}, [children, refreshApp])
 
 
-	const createEmployee = async ({ firstName, lastName, gender, address, dob }) => {
-		const res = await employeeService.add({ firstName, lastName, gender, address, dob })
+	const createEmployee = async ({ firstName, lastName, gender, address, email, dob, departmentId }) => {
+		const res = await employeeService.add({ firstName, lastName, gender, address, email, dob, departmentId })
 
 		if (res && res.statusCode === 200) {
 			toast("Add employee successfully", { type: "success" })

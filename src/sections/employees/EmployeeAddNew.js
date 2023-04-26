@@ -12,12 +12,14 @@ import dayjs from 'dayjs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useEmployee } from 'src/hooks/use-employee';
+import { useDepartmentContext } from 'src/contexts/DepartmentContext';
 
 
 
 export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, onSubmit }) {
 	const employee = useEmployee()
 	const firstNameRef = React.useRef(null);
+	const { departmentList } = useDepartmentContext();
 
 	const handleClearForm = () => {
 		formik.resetForm();
@@ -28,7 +30,9 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 			firstName: '',
 			lastName: '',
 			address: "",
+			email: "",
 			gender: 1,
+			departmentId: departmentList[0]?.id || '',
 			dob: dayjs().add(-20, 'year'),
 		},
 		validationSchema: Yup.object({
@@ -43,16 +47,24 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 			address: Yup
 				.string()
 				.max(255)
-				.required('Address is required')
+				.required('Address is required'),
+			email: Yup
+				.string()
+				.email("Must be a valid email")
+				.max(255)
+				.required('Email is required'),
 		}),
+		// enableReinitialize: true,
 		onSubmit: async (values, helpers) => {
 			try {
 				await employee.createEmployee({
 					firstName: values.firstName,
 					lastName: values.lastName,
 					address: values.address,
+					email: values.email,
 					gender: values.gender,
-					dob: values.dob.format("DD/MM/YYYY")
+					dob: values.dob.format("DD/MM/YYYY"),
+					departmentId: values.departmentId
 				})
 			} catch (err) {
 				helpers.setStatus({ success: false });
@@ -63,7 +75,6 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 	});
 
 	return (
-
 		<div>
 			<Dialog
 				open={isOpen}
@@ -121,10 +132,24 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 							type="text"
 							fullWidth
 						/>
+						<TextField
+							required
+							margin="dense"
+							label="Email"
+							name='email'
+							error={!!(formik.touched.email && formik.errors.email)}
+							helperText={formik.touched.email && formik.errors.email}
+							value={formik.values.email}
+							onBlur={formik.handleBlur}
+							onChange={formik.handleChange}
+							type="email"
+							fullWidth
+						/>
+
+						<InputLabel sx={{ pt: 1, pl: 1 }}>Gender*</InputLabel>
 						<FormControl
 							sx={{ mb: 1, mt: 1 }}
 							fullWidth
-
 						>
 							{/* <InputLabel id="demo-select-small"
 							variant='outlined' >Gender</InputLabel> */}
@@ -135,14 +160,33 @@ export default function EmployeeAddNewFormDialog({ isOpen, onClose, onCancel, on
 								// label="Gender"
 								name='gender'
 								value={formik.values.gender}
-								onChange={(e) => {
-									console.log(e)
-									formik.setFieldValue("gender", e.target.value)
-								}}
+								onChange={(e) => { formik.setFieldValue("gender", e.target.value) }}
 							>
 								<MenuItem value={0}>Female</MenuItem>
 								<MenuItem value={1}>Male</MenuItem>
 								<MenuItem value={2}>Other</MenuItem>
+							</Select>
+						</FormControl>
+
+						<InputLabel sx={{ pt: 1, pl: 1 }}>Department*</InputLabel>
+						<FormControl
+							sx={{ mb: 1, mt: 1 }}
+							fullWidth
+						>
+							<Select
+								margin='dense'
+								name='department'
+								value={formik.values.departmentId}
+								onChange={(e) => { formik.setFieldValue("departmentId", e.target.value) }}
+							>
+								{departmentList?.map((de, index) => (
+									<MenuItem
+										key={index}
+										value={de.id}
+									>
+										{de.name}
+									</MenuItem>
+								))}
 							</Select>
 						</FormControl>
 						<DatePicker

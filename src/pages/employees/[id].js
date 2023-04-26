@@ -48,14 +48,27 @@ const Page = () => {
 							</Typography>
 						</div> */}
 						<div>
-							<Grid container spacing={3}>
-								<Grid xs={12} md={6} lg={4} item>
+							<Grid container
+								spacing={3}>
+								<Grid xs={12}
+									md={6}
+									lg={4}
+									item
+								>
 									<EmployeeProfile employeeId={id} />
 								</Grid>
-								<Grid xs={12} md={6} lg={8} item>
+								<Grid
+									xs={12}
+									md={6}
+									lg={8}
+									item
+								>
 									<EmployeeProfileDetails employeeId={id} />
 								</Grid>
-								<Grid xs={12} md={6} lg={8} item>
+								<Grid
+									xs={12}
+									item
+								>
 									{insurancee ? (
 										<UpdateInsurance info={insurancee} />
 									) : (

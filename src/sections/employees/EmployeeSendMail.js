@@ -15,7 +15,7 @@ import { useEmployeeContext } from 'src/contexts/EmployeeContext';
 
 
 
-export default function EmployeeSendMailFormDialog({ isOpen, onClose, onCancel, onSubmit }) {
+export default function EmployeeSendMailFormDialog({ isOpen, onClose, onCancel, onSubmit, email }) {
 	const employeeContext = useEmployeeContext();
 	const firstNameRef = useRef(null);
 	const [filesToUpload, setFilesToUpload] = useState([])
@@ -43,7 +43,7 @@ export default function EmployeeSendMailFormDialog({ isOpen, onClose, onCancel, 
 		onSubmit: async (values, helpers) => {
 			try {
 				await employeeContext.sendMail({
-					emails: "buithang.261001@gmail.com",
+					emails: email,
 					subject: values.subject,
 					content: values.content,
 					files: filesToUpload

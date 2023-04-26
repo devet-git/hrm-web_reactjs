@@ -8,7 +8,8 @@ import { toast } from 'react-toastify';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { useEmployeeContext } from 'src/contexts/EmployeeContext';
 import EmployeeSendMailFormDialog from './EmployeeSendMail';
-import { useState } from 'react';
+import { memo, useMemo, useState } from 'react';
+import { useDepartmentContext } from 'src/contexts/DepartmentContext';
 
 const columns = [
 	{
@@ -18,11 +19,13 @@ const columns = [
 	{ field: 'firstName', headerName: 'First name', width: 100, filterable: true },
 	{ field: 'lastName', headerName: 'Last name', width: 200, filterable: true },
 	{
+		field: 'departmentId', headerName: 'Department', width: 200, filterable: true,
+		renderCell: (params) => <GenDepartmentFromId id={params.row.departmentId} />
+	},
+	{
 		field: 'gender', headerName: 'Gender', width: 100,
-		valueGetter: (params) => {
-			let gender = ["Female", "Male", "Other"]
-			return gender[params.row.gender]
-		}
+		renderCell: (params) => <GenGender genderCode={params.row.gender} />
+
 	},
 	{ field: 'address', headerName: 'Address', width: 250 },
 	{
@@ -48,11 +51,60 @@ const columns = [
 		headerName: 'Action',
 		type: 'actions',
 		width: 150,
-		renderCell: (params) => (<Actions empId={params.row.id} />),
+		renderCell: (params) => (
+			<Actions
+				empId={params.row.id}
+				empEmail={params.row.email}
+			/>
+		),
 	},
 ];
+const GenGender = ({ genderCode }) => {
+	let gender = [
+		{ name: "Female", color: "#fccf74" },
+		{ name: "Male", color: "#74cafc" },
+		{ name: "Other", color: "#da82ff" },
+	]
+	return (
+		<span style={{
+			background: gender[genderCode].color,
+			padding: "3px 10px",
+			borderRadius: "10px"
+		}}
+		>{gender[genderCode].name}</span>
+	)
+}
+let departmentColorMapping = ['hsl(50, 100%, 75%)'];
 
-const Actions = ({ empId }) => {
+const GenDepartmentFromId = ({ id }) => {
+	const { departmentList } = useDepartmentContext();
+	const department = departmentList.find(d => d.id === id)
+
+	useMemo(() => {
+		if (departmentList.length === departmentColorMapping.length) {
+			const randomColor = `hsl(${Math.floor(Math.random() * 361)}, 50%, 75%)`
+			departmentColorMapping[departmentColorMapping.length] = departmentColorMapping.includes(randomColor) ? randomColor : `hsl(${Math.floor(Math.random() * 361)}, 50%, 80%)`;
+		} else {
+			for (let i = 1; i < departmentList.length; i++) {
+				departmentColorMapping[i] = `hsl(${Math.floor(Math.random() * 361)}, 50%, 80%)`;
+			}
+		}
+	}, [departmentList])
+
+	const colorMapped = departmentColorMapping[departmentList.indexOf(department)]
+	return (
+		<span style={{
+			background: colorMapped,
+			padding: "3px 10px",
+			borderRadius: "10px"
+		}}
+		>
+			{department?.name || ""}
+		</span>
+	)
+}
+
+const Actions = ({ empId, empEmail }) => {
 	const router = useRouter()
 	const [isOpenConfirmDeleteDialog, setIsOpenConfirmDeleteDialog] = useState(false)
 	const [isOpenSendMailDialog, setIsOpenSendMailDialog] = useState(false)
@@ -63,16 +115,16 @@ const Actions = ({ empId }) => {
 	}
 	const handleDelete = async () => {
 		await deleteEmployee(empId);
-		setIsOpenConfirmDeleteDialog(true)
+		setIsOpenConfirmDeleteDialog(false)
 	}
-	const handleSendMail = async () => setIsOpenSendMailDialog(true)
+	const handleSendMail = () => setIsOpenSendMailDialog(true)
 
-	const handleCloseDialog = () => setIsOpenConfirmDeleteDialog(false)
+	const handleCloseConfirmDeleteDialog = () => setIsOpenConfirmDeleteDialog(false)
 
-	const DeleteConfirmDialog = () => (
+	const ConfirmDeleteDialog = memo(() => (
 		<Dialog
 			open={isOpenConfirmDeleteDialog}
-			onClose={handleCloseDialog}
+			// onClose={handleCloseConfirmDeleteDialog}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
@@ -85,14 +137,13 @@ const Actions = ({ empId }) => {
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleCloseDialog}>Cancel</Button>
-				<Button onClick={handleDelete}
-					autoFocus>
+				<Button onClick={handleCloseConfirmDeleteDialog}>Cancel</Button>
+				<Button onClick={handleDelete}>
 					Delete
 				</Button>
 			</DialogActions>
 		</Dialog>
-	)
+	))
 	return (
 		<>
 			<Tooltip title="Update">
@@ -110,9 +161,31 @@ const Actions = ({ empId }) => {
 			</Tooltip>
 			<EmployeeSendMailFormDialog
 				isOpen={isOpenSendMailDialog}
-				onCancel={() => setIsOpenSendMailDialog(false)}
+				onClose={() => setIsOpenSendMailDialog(false)}
+				email={empEmail}
 			/>
-			<DeleteConfirmDialog />
+			{/* <Dialog
+				open={isOpenConfirmDeleteDialog}
+				// onClose={handleCloseConfirmDeleteDialog}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">
+					{"Are you sure delete this employee?"}
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						You should consider carefully before deleting your employee
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseConfirmDeleteDialog}>Cancel</Button>
+					<Button onClick={handleDelete}>
+						Delete
+					</Button>
+				</DialogActions>
+			</Dialog> */}
+			<ConfirmDeleteDialog />
 		</>
 	)
 }
