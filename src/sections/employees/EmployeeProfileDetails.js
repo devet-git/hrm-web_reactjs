@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import {
 	Box,
 	Button,
@@ -11,31 +11,45 @@ import {
 	Unstable_Grid2 as Grid,
 	Select,
 	MenuItem,
-	FormControl
+	FormControl,
+	InputLabel
 } from '@mui/material';
 import { useFormik } from 'formik';
 import { useEmployee } from 'src/hooks/use-employee';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import * as Yup from "yup"
+import { useDepartmentContext } from 'src/contexts/DepartmentContext';
+import { useApp } from 'src/hooks/use-app';
 
 
 
-export const EmployeeProfileDetails = ({ employeeId }) => {
+export const EmployeeProfileDetails = memo(({ employeeId }) => {
 
 	const employee = useEmployee()
 	const { employeeList } = useEmployee();
-	const employeeData = employeeList.find(emp => emp.id === employeeId)
+	const { departmentList } = useDepartmentContext();
+	const [employeeData, setEmployeeData] = useState(employeeList.find(emp => emp.id === employeeId) || [])
+
+	// const employeeData = employeeList.find(emp => emp.id === employeeId)
+	const { refreshApp } = useApp();
+
+	useEffect(() => {
+		const newData = employeeList.find(emp => emp.id === employeeId)
+		setEmployeeData(newData)
+	}, [employeeId, employeeList])
 
 	const formik = useFormik({
 		initialValues: {
-			firstName: employeeData?.firstName,
-			lastName: employeeData?.lastName,
-			address: employeeData?.address,
+			firstName: employeeData?.firstName || '',
+			lastName: employeeData?.lastName || '',
+			address: employeeData?.address || '',
 			dob: dayjs(new Date(employeeData?.dob)),
-			gender: employeeData?.gender,
-			email: employeeData?.email,
+			gender: employeeData?.gender || 0,
+			email: employeeData?.email || '',
+			departmentId: employeeData?.departmentId || ''
 		},
+		enableReinitialize: true,
 		validationSchema: Yup.object({
 			firstName: Yup
 				.string()
@@ -52,12 +66,14 @@ export const EmployeeProfileDetails = ({ employeeId }) => {
 		}),
 		onSubmit: async (values, helpers) => {
 			try {
-				await employee.updateEmployee(employeeId, {
+				await employee.updateEmployee({
+					id: employeeId,
 					firstName: values.firstName,
 					lastName: values.lastName,
 					address: values.address,
 					dob: values.dob.format("DD/MM/YYYY"),
-					gender: values.gender
+					gender: values.gender,
+					departmentId: values.departmentId,
 				})
 			} catch (err) {
 				helpers.setStatus({ success: false });
@@ -75,7 +91,7 @@ export const EmployeeProfileDetails = ({ employeeId }) => {
 			<Card>
 				<CardHeader
 					subheader="The information can be edited"
-					title="Info"
+					title="Profile"
 				/>
 				<CardContent sx={{ pt: 0 }}>
 					<Box sx={{ m: -1.5 }}>
@@ -136,6 +152,22 @@ export const EmployeeProfileDetails = ({ employeeId }) => {
 								<TextField
 									required
 									fullWidth
+									label="Email"
+									name="email"
+									error={!!(formik.touched.email && formik.errors.email)}
+									helperText={formik.touched.email && formik.errors.email}
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+									value={formik.values.email}
+								/>
+							</Grid>
+							<Grid
+								xs={12}
+								md={12}
+							>
+								<TextField
+									required
+									fullWidth
 									label="Address"
 									name="address"
 									error={!!(formik.touched.address && formik.errors.address)}
@@ -145,19 +177,18 @@ export const EmployeeProfileDetails = ({ employeeId }) => {
 									value={formik.values.address}
 								/>
 							</Grid>
+
 							<Grid
 								xs={12}
 								md={6}
 							>
+								<InputLabel sx={{ pl: 1 }}>Gender</InputLabel>
 								<FormControl
 									sx={{ mb: 1, mt: 1 }}
 									fullWidth
 								>
 									<Select
 										margin='dense'
-										// labelId="gender"
-										// id="gender"
-										// label="Gender"
 										name='gender'
 										value={formik.values.gender}
 										onChange={(e) => {
@@ -174,18 +205,29 @@ export const EmployeeProfileDetails = ({ employeeId }) => {
 								xs={12}
 								md={6}
 							>
-								<TextField
-									required
+								<InputLabel sx={{ pl: 1 }}>Department</InputLabel>
+								<FormControl
+									sx={{ mb: 1, mt: 1 }}
 									fullWidth
-									label="Email"
-									name="email"
-									error={!!(formik.touched.email && formik.errors.email)}
-									helperText={formik.touched.email && formik.errors.email}
-									onChange={formik.handleChange}
-									onBlur={formik.handleBlur}
-									value={formik.values.email}
-								/>
+								>
+									<Select
+										margin='dense'
+										name='departmentId'
+										value={formik.values.departmentId}
+										onChange={(e) => formik.setFieldValue("departmentId", e.target.value)}
+									>
+										{departmentList?.map(de => (
+											<MenuItem
+												key={de.id}
+												value={de.id}
+											>
+												{de.name}
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
 							</Grid>
+
 						</Grid>
 					</Box>
 				</CardContent>
@@ -201,4 +243,4 @@ export const EmployeeProfileDetails = ({ employeeId }) => {
 			</Card>
 		</form>
 	);
-};
+});

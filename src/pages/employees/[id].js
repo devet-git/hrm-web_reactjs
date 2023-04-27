@@ -11,23 +11,26 @@ import { useEffect, useState } from "react";
 import { useInsuranceContext } from "src/contexts/InsuranceContext";
 import employeeService from "src/services/employeeService";
 import { UpdateInsurance } from "src/sections/employees/updateInsurance";
+import { useApp } from "src/hooks/use-app";
 
 const Page = () => {
 	const router = useRouter();
 	const { id } = router.query;
 	const insuranceContext = useInsuranceContext();
-	const [insurancee, setInsurancee] = useState();
+	const [insurance, setInsurance] = useState(insuranceContext.insuranceList.find((res) => res.employeeId === id));
+	const { refreshApp } = useApp();
+
 	useEffect(() => {
 		(async () => {
-			const insurances = await insuranceContext.getAllInsurance();
-			const insuranceId = insurances.find((res) => res.employeeId === id);
-			console.log(insuranceId);
-			setInsurancee(insuranceId);
-			if (insurancee === undefined) {
+			const insuranceNew = insuranceContext.insuranceList.find((ins) => ins.employeeId === id);
+			// console.log(insuranceId);
+			setInsurance(insuranceNew);
+			if (insuranceNew === undefined) {
 				return;
 			}
 		})();
-	}, [id]);
+	}, [id, refreshApp, insuranceContext.insuranceList]);
+
 	return (
 		<>
 			<Head>
@@ -69,8 +72,8 @@ const Page = () => {
 									xs={12}
 									item
 								>
-									{insurancee ? (
-										<UpdateInsurance info={insurancee} />
+									{insurance ? (
+										<UpdateInsurance info={insurance} />
 									) : (
 										<AddInsurance employeeId={id} />
 									)}

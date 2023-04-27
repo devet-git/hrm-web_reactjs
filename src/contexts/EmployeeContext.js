@@ -28,8 +28,8 @@ export function EmployeeProvider(props) {
 		}
 		else toast("Add failed employee", { type: "error" })
 	}
-	const updateEmployee = async (id, { firstName, lastName, gender, address, dob }) => {
-		const res = await employeeService.update(id, { firstName, lastName, gender, address, dob })
+	const updateEmployee = async ({ id, firstName, lastName, gender, address, dob, departmentId }) => {
+		const res = await employeeService.update({ id, firstName, lastName, gender, address, dob, departmentId })
 		if (res && res.statusCode === 200) {
 			toast("Update employee info successfully", { type: "success" })
 			refresh();
@@ -52,8 +52,20 @@ export function EmployeeProvider(props) {
 		}
 		else toast("Send mail failed", { type: "error" })
 	}
+	const exportToExcel = async () => {
+		const res = await employeeService.exportToExcel()
+		if (res) {
+			toast("Export successfully", { type: "success" })
+			refresh();
+		}
+		else toast("Export failed", { type: "error" })
+	}
 	return (
-		<EmployeeContext.Provider value={{ sendMail, createEmployee, updateEmployee, deleteEmployee, employeeList }}>
+		<EmployeeContext.Provider
+			value={{
+				exportToExcel, sendMail, createEmployee, updateEmployee, deleteEmployee, employeeList
+			}}
+		>
 			{children}
 		</EmployeeContext.Provider>
 	)

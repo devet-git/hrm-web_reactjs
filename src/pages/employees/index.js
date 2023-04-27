@@ -14,20 +14,15 @@ import EmployeeAddNewFormDialog from 'src/sections/employees/EmployeeAddNew';
 import { useEmployeeContext } from 'src/contexts/EmployeeContext';
 import { useEmployee } from 'src/hooks/use-employee';
 
-const now = new Date();
-
 
 const Page = () => {
 	// const [employees, setEmployees] = useState(null)
 	const [isOpenAddNewDialog, setIsOpenAddNewDialog] = useState(false)
 	const { employeeList } = useEmployee();
-	// useEffect(() => {
-	// 	(async () => {
-	// 		let res = await employeeService.getAll()
-	// 		console.log(res.data);
-	// 		res && res.statusCode === 200 && setEmployees(res.data)
-	// 	})()
-	// }, [])
+	const employeeContext = useEmployeeContext();
+	const handleExport = async () => {
+		await employeeContext.exportToExcel()
+	}
 
 	return (
 		<>
@@ -81,6 +76,7 @@ const Page = () => {
 												<ArrowDownOnSquareIcon />
 											</SvgIcon>
 										)}
+										onClick={handleExport}
 									>
 										Export
 									</Button>

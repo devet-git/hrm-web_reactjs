@@ -13,6 +13,7 @@ const endpointConst = {
 		ADD: "employees",
 		UPDATE: (id) => "employees/" + id,
 		DELETE: (id) => "employees/" + id,
+		EXPORT: "employees/export"
 	},
 	FILE: {
 		GET_ALL: "files",

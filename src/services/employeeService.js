@@ -18,9 +18,9 @@ const employeeService = {
 			return error?.response?.data || null
 		}
 	},
-	async update(id, { firstName, lastName, gender, address, dob }) {
+	async update({ id, firstName, lastName, gender, address, dob, departmentId }) {
 		try {
-			const res = await apiConfig.put(endpointConst.EMPLOYEE.UPDATE(id), { firstName, lastName, gender, address, dob })
+			const res = await apiConfig.put(endpointConst.EMPLOYEE.UPDATE(id), { firstName, lastName, gender, address, dob, departmentId })
 			return res.data
 		} catch (error) {
 			return error?.response?.data || null
@@ -32,6 +32,21 @@ const employeeService = {
 			return res.data
 		} catch (error) {
 			return error?.response?.data || null
+		}
+	},
+	async exportToExcel() {
+		try {
+			const res = await apiConfig.get(endpointConst.EMPLOYEE.EXPORT, { responseType: "blob" })
+			const currentDate = new Date().toLocaleDateString('en-GB');
+			const downloadUrl = window.URL.createObjectURL(new Blob([res.data], { type: 'application/octet-stream' }));
+			const link = document.createElement('a');
+			link.href = downloadUrl;
+			link.setAttribute('download', `EmployeeList__${currentDate}.xlsx`);
+			document.body.appendChild(link);
+			link.click();
+			return true
+		} catch (error) {
+			return false
 		}
 	},
 
