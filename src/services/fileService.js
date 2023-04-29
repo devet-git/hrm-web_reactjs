@@ -16,9 +16,7 @@ const fileService = {
 			filesToUpload.forEach((file) => formData.append("files", file))
 			const res = await apiConfig.post(endpointConst.FILE.UPLOAD, formData,
 				{
-					headers: {
-						"Content-Type": "multipart/form-data",
-					}
+					headers: { "Content-Type": "multipart/form-data", }
 				}
 			)
 			return res.data

@@ -12,7 +12,7 @@ const columns = [
 		renderCell: (params) => params.api.getRowIndexRelativeToVisibleRows(params.row.id) + 1,
 	},
 	{ field: 'name', headerName: 'Name', width: 300, filterable: true },
-	{ field: 'description', headerName: 'Description', width: 500, resizable: true, filterable: true },
+	{ field: 'description', headerName: 'Description', width: 500, filterable: true },
 	{
 		field: 'action',
 		headerName: 'Action',

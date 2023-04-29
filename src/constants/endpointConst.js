@@ -13,6 +13,7 @@ const endpointConst = {
 		ADD: "employees",
 		UPDATE: (id) => "employees/" + id,
 		DELETE: (id) => "employees/" + id,
+		EXPORT: "employees/export"
 	},
 	FILE: {
 		GET_ALL: "files",
@@ -29,6 +30,9 @@ const endpointConst = {
 		GET_ALL: "departments",
 		UPDATE: (id) => "departments/" + id,
 		DELETE: (id) => "departments/" + id,
+	},
+	MAIL: {
+		SEND: "mails",
 	},
 }
 

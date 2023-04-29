@@ -9,7 +9,7 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { useEmployee } from 'src/hooks/use-employee';
 import FileDataTable from 'src/sections/files/FileDataTable';
 import { useFileContext } from 'src/contexts/FileContext';
-import EmployeeAddNewFormDialog from 'src/sections/employees/employees-add-new';
+import EmployeeAddNewFormDialog from 'src/sections/employees/EmployeeAddNew';
 import FileUploadFeature from 'src/sections/files/FileUploadFeature';
 
 

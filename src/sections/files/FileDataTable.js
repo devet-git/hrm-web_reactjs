@@ -48,7 +48,7 @@ const Actions = ({ fileId, downloadUrl, fileName }) => {
 	const fileContext = useFileContext();
 
 	const handleDelete = async () => {
-		console.log(fileId);
+		// console.log(fileId);
 		await fileContext.deleteFile(fileId)
 		setIsOpenDialog(false)
 	}

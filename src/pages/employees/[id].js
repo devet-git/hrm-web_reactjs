@@ -11,23 +11,26 @@ import { useEffect, useState } from "react";
 import { useInsuranceContext } from "src/contexts/InsuranceContext";
 import employeeService from "src/services/employeeService";
 import { UpdateInsurance } from "src/sections/employees/updateInsurance";
+import { useApp } from "src/hooks/use-app";
 
 const Page = () => {
 	const router = useRouter();
 	const { id } = router.query;
 	const insuranceContext = useInsuranceContext();
-	const [insurancee, setInsurancee] = useState();
+	const [insurance, setInsurance] = useState(insuranceContext.insuranceList.find((res) => res.employeeId === id));
+	const { refreshApp } = useApp();
+
 	useEffect(() => {
 		(async () => {
-			const insurances = await insuranceContext.getAllInsurance();
-			const insuranceId = insurances.find((res) => res.employeeId === id);
-			console.log(insuranceId);
-			setInsurancee(insuranceId);
-			if (insurancee === undefined) {
+			const insuranceNew = insuranceContext.insuranceList.find((ins) => ins.employeeId === id);
+			// console.log(insuranceId);
+			setInsurance(insuranceNew);
+			if (insuranceNew === undefined) {
 				return;
 			}
 		})();
-	}, [id]);
+	}, [id, refreshApp, insuranceContext.insuranceList]);
+
 	return (
 		<>
 			<Head>
@@ -48,16 +51,29 @@ const Page = () => {
 							</Typography>
 						</div> */}
 						<div>
-							<Grid container spacing={3}>
-								<Grid xs={12} md={6} lg={4} item>
+							<Grid container
+								spacing={3}>
+								<Grid xs={12}
+									md={6}
+									lg={4}
+									item
+								>
 									<EmployeeProfile employeeId={id} />
 								</Grid>
-								<Grid xs={12} md={6} lg={8} item>
+								<Grid
+									xs={12}
+									md={6}
+									lg={8}
+									item
+								>
 									<EmployeeProfileDetails employeeId={id} />
 								</Grid>
-								<Grid xs={12} md={6} lg={8} item>
-									{insurancee ? (
-										<UpdateInsurance info={insurancee} />
+								<Grid
+									xs={12}
+									item
+								>
+									{insurance ? (
+										<UpdateInsurance info={insurance} />
 									) : (
 										<AddInsurance employeeId={id} />
 									)}

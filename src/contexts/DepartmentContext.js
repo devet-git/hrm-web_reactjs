@@ -5,7 +5,7 @@ import departmentService from "src/services/departmentService";
 
 export const DepartmentContext = createContext(null)
 
-export const DepaartmentProvider = (props) => {
+export const DepartmentProvider = (props) => {
 	const { children } = props;
 	const [isLoading, setIsLoading] = useState(false)
 	const [departmentList, setDepartmentList] = useState([]);

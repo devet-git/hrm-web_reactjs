@@ -1,21 +1,33 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import insuranceService from "src/services/insuranceService";
 import userService from "src/services/userService";
+import { useAppContext } from "./AppContext";
 
 export const InsuranceContext = createContext(null);
 
 export const InsuranceProvider = (props) => {
 	const { children } = props;
 	const [isLoading, setIsLoading] = useState(false);
+	const [insuranceList, setInsuranceList] = useState([]);
+	const { refresh, refreshApp } = useAppContext();
+
+	useEffect(() => {
+		(async () => {
+			const res = await insuranceService.getAll()
+			setInsuranceList(res?.data || [])
+		})()
+	}, [children, refreshApp])
+
 
 	const addInsurance = async ({ number, issuedDate, issuedPlace, employeeId }) => {
 		setIsLoading(true);
 		let res = await insuranceService.add({ number, issuedDate, issuedPlace, employeeId });
 		if (res && res.statusCode === 200) {
 			toast("Add insurance successfully", { type: "success" });
+			refresh();
 		} else toast("Add failed insurance", { type: "error" });
-		console.log(res);
+		// console.log(res);
 		setIsLoading(false);
 	};
 	const getAllInsurance = async () => {
@@ -35,7 +47,7 @@ export const InsuranceProvider = (props) => {
 	};
 	return (
 		<InsuranceContext.Provider
-			value={{ isLoading, addInsurance, getAllInsurance, updateInsurance }}
+			value={{ isLoading, insuranceList, addInsurance, getAllInsurance, updateInsurance }}
 		>
 			{children}
 		</InsuranceContext.Provider>

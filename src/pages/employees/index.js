@@ -9,25 +9,20 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { EmployeesSearch } from 'src/sections/employees/emplyees-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 import employeeService from 'src/services/employeeService';
-import EmployeesDataTable from 'src/sections/employees/EmployeesTable';
-import EmployeeAddNewFormDialog from 'src/sections/employees/employees-add-new';
+import EmployeesDataTable from 'src/sections/employees/EmployeesDataTable';
+import EmployeeAddNewFormDialog from 'src/sections/employees/EmployeeAddNew';
 import { useEmployeeContext } from 'src/contexts/EmployeeContext';
 import { useEmployee } from 'src/hooks/use-employee';
-
-const now = new Date();
 
 
 const Page = () => {
 	// const [employees, setEmployees] = useState(null)
 	const [isOpenAddNewDialog, setIsOpenAddNewDialog] = useState(false)
 	const { employeeList } = useEmployee();
-	// useEffect(() => {
-	// 	(async () => {
-	// 		let res = await employeeService.getAll()
-	// 		console.log(res.data);
-	// 		res && res.statusCode === 200 && setEmployees(res.data)
-	// 	})()
-	// }, [])
+	const employeeContext = useEmployeeContext();
+	const handleExport = async () => {
+		await employeeContext.exportToExcel()
+	}
 
 	return (
 		<>
@@ -81,6 +76,7 @@ const Page = () => {
 												<ArrowDownOnSquareIcon />
 											</SvgIcon>
 										)}
+										onClick={handleExport}
 									>
 										Export
 									</Button>
