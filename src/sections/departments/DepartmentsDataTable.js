@@ -47,9 +47,9 @@ const RowActions = ({ department }) => {
 					<AiOutlineEdit />
 				</IconButton>
 			</Tooltip>
-			<IconButton onClick={() => setIsOpenDialog(true)}>
+			{/* <IconButton onClick={() => setIsOpenDialog(true)}>
 				<AiOutlineDelete />
-			</IconButton>
+			</IconButton> */}
 			<Dialog
 				open={isOpenDialog}
 				onClose={handleCloseDialog}

@@ -19,8 +19,8 @@ export function EmployeeProvider(props) {
 	}, [children, refreshApp])
 
 
-	const createEmployee = async ({ firstName, lastName, gender, address, email, dob, departmentId }) => {
-		const res = await employeeService.add({ firstName, lastName, gender, address, email, dob, departmentId })
+	const createEmployee = async ({ firstName, lastName, gender, address, email, dob, positionId, departmentId }) => {
+		const res = await employeeService.add({ firstName, lastName, gender, address, email, dob, departmentId, positionId })
 
 		if (res && res.statusCode === 200) {
 			toast("Add employee successfully", { type: "success" })
@@ -28,8 +28,8 @@ export function EmployeeProvider(props) {
 		}
 		else toast("Add failed employee", { type: "error" })
 	}
-	const updateEmployee = async ({ id, firstName, lastName, gender, address, dob, departmentId }) => {
-		const res = await employeeService.update({ id, firstName, lastName, gender, address, dob, departmentId })
+	const updateEmployee = async ({ id, firstName, lastName, gender, address, dob, positionId, departmentId }) => {
+		const res = await employeeService.update({ id, firstName, lastName, gender, address, dob, positionId, departmentId })
 		if (res && res.statusCode === 200) {
 			toast("Update employee info successfully", { type: "success" })
 			refresh();
