@@ -10,17 +10,17 @@ const employeeService = {
 			return error?.response?.data
 		}
 	},
-	async add({ firstName, lastName, gender, address, email, dob, departmentId }) {
+	async add({ firstName, lastName, gender, address, email, dob, positionId, departmentId }) {
 		try {
-			const res = await apiConfig.post(endpointConst.EMPLOYEE.ADD, { firstName, lastName, gender, address, email, dob, departmentId })
+			const res = await apiConfig.post(endpointConst.EMPLOYEE.ADD, { firstName, lastName, gender, address, email, dob, positionId, departmentId })
 			return res.data
 		} catch (error) {
 			return error?.response?.data || null
 		}
 	},
-	async update({ id, firstName, lastName, gender, address, dob, departmentId }) {
+	async update({ id, firstName, lastName, gender, address, dob, positionId, departmentId }) {
 		try {
-			const res = await apiConfig.put(endpointConst.EMPLOYEE.UPDATE(id), { firstName, lastName, gender, address, dob, departmentId })
+			const res = await apiConfig.put(endpointConst.EMPLOYEE.UPDATE(id), { firstName, lastName, gender, address, dob, positionId, departmentId })
 			return res.data
 		} catch (error) {
 			return error?.response?.data || null
