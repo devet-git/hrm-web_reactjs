@@ -231,6 +231,7 @@ const RowActions = ({ empId, empEmail }) => {
 			<EmployeeSendMailFormDialog
 				isOpen={isOpenSendMailDialog}
 				onClose={() => setIsOpenSendMailDialog(false)}
+				onCancel={() => setIsOpenSendMailDialog(false)}
 				email={empEmail}
 			/>
 			{/* <Dialog

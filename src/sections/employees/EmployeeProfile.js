@@ -1,5 +1,5 @@
 import {
-	Avatar,
+	Avatar as AvatarMUI,
 	Box,
 	Button,
 	Card,
@@ -19,13 +19,26 @@ const user = {
 export const EmployeeProfile = ({ employeeId }) => {
 	const { employeeList } = useEmployee();
 	const [employee, setEmployee] = useState(employeeList.find(emp => emp.id === employeeId) || [])
-	// const employee = employeeList.find(emp => emp.id === employeeId)
 	const { refreshApp } = useApp();
+	const [avatarPreview, setAvatarPreview] = useState(null)
+
 
 	useEffect(() => {
 		const newData = employeeList.find(emp => emp.id === employeeId)
 		setEmployee(newData)
 	}, [employeeId, employeeList, refreshApp])
+
+	function onClose() {
+		setAvatarPreview(null);
+	}
+
+	function onCrop(preview) {
+		setAvatarPreview(preview);
+	}
+
+	function onBeforeFileLoad(elem) {
+
+	}
 
 	return (
 		<Card>
@@ -37,8 +50,8 @@ export const EmployeeProfile = ({ employeeId }) => {
 						flexDirection: 'column'
 					}}
 				>
-					<Avatar
-						src={user.avatar}
+					<AvatarMUI
+						src={avatarPreview}
 						sx={{
 							height: 80,
 							mb: 2,
@@ -52,20 +65,24 @@ export const EmployeeProfile = ({ employeeId }) => {
 					>
 						{employee?.firstName} {employee?.lastName}
 					</Typography>
-					{/* <Typography
-						color="text.secondary"
-						variant="body2"
-					>
-						{auth.currentUser.id}
-					</Typography> */}
 					<Typography
 						color="text.secondary"
 						variant="body2"
 						textAlign={'center'}
-
 					>
 						{new Date(employee?.dob).toLocaleDateString('en-GB')}
 					</Typography>
+					<Typography>
+						{/* <Avatar
+							width={"100%"}
+							// height={295}
+							onCrop={onCrop}
+							onClose={onClose}
+							onBeforeFileLoad={onBeforeFileLoad}
+							src={null}
+						/> */}
+					</Typography>
+
 				</Box>
 			</CardContent>
 			<Divider />

@@ -47,6 +47,7 @@ const FileUploadFeature = ({ isOpen, onClose, onCancel }) => {
 				<Button
 					variant='contained'
 					onClick={handleUpload}
+					disabled={filesToUpload.length == 0}
 				>
 					Upload
 				</Button>
