@@ -55,7 +55,10 @@ export const UpdateInsurance = ({ info }) => {
 			onSubmit={formik.handleSubmit}
 		>
 			<Card>
-				<CardHeader subheader="The information can be edited" title="Insurance" />
+				<CardHeader
+					subheader="The information can be edited"
+					title="Insurance"
+				/>
 				<CardContent sx={{ pt: 0 }}>
 					<Box sx={{ m: -1.5 }}>
 						<Grid

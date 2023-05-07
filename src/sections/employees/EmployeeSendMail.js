@@ -72,7 +72,6 @@ export default function EmployeeSendMailFormDialog({ isOpen, onClose, onCancel, 
 					<DialogContent dividers={true}>
 						<TextField
 							required
-							autoFocus
 							margin="dense"
 							label="Subject"
 							name='subject'

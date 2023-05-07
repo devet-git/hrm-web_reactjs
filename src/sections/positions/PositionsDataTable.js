@@ -13,16 +13,22 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { usePositionContext } from "src/contexts/PositionContext";
+import positionUtil from "src/utils/positionUtil";
 
 const columns = [
 	{
 		headerName: "Serial",
 		filterable: false,
-		width: 70,
+		width: 50,
 		renderCell: (params) => params.api.getRowIndexRelativeToVisibleRows(params.row.id) + 1,
 	},
-	{ field: "name", headerName: "Name", width: 300, filterable: true },
-	{ field: "description", headerName: "Description", width: 500, filterable: true },
+	{ field: "name", headerName: "Name", width: 280, filterable: true },
+	{
+		field: "level", headerName: "Level", width: 80, filterable: true,
+		renderCell: (params) => positionUtil.levels.indexOf(params.row.level)
+
+	},
+	{ field: "description", headerName: "Description", width: 450, filterable: true },
 	{
 		field: "action",
 		headerName: "Action",
@@ -32,6 +38,7 @@ const columns = [
 				position={{
 					id: params.row.id,
 					name: params.row.name,
+					level: params.row.level,
 					description: params.row.description,
 				}}
 			/>

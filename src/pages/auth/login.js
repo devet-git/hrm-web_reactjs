@@ -25,8 +25,8 @@ const Page = () => {
 	const [method, setMethod] = useState("email");
 	const formik = useFormik({
 		initialValues: {
-			email: "hoangvu@gmail.com",
-			password: "12345$$Cc",
+			email: "thangq1@gmail.com",
+			password: "123456##Bqt",
 			submit: null,
 		},
 		validationSchema: Yup.object({
@@ -34,14 +34,8 @@ const Page = () => {
 			password: Yup.string().max(255).required("Password is required"),
 		}),
 		onSubmit: async (values, helpers) => {
-			// const res = await authService.login(values.email, values.password);
 			try {
 				await auth.signIn(values.email, values.password);
-				// if (res?.statusCode === 200)
-				router.push("/");
-				// else {
-				// 	throw new Error('Account is not exist');
-				// }
 			} catch (err) {
 				helpers.setStatus({ success: false });
 				helpers.setErrors({ submit: err.message });
@@ -53,14 +47,6 @@ const Page = () => {
 	const handleMethodChange = useCallback((event, value) => {
 		setMethod(value);
 	}, []);
-
-	/*const handleSkip = useCallback(
-		() => {
-			auth.skip();
-			router.push('/');
-		},
-		[auth, router]
-	);*/
 
 	return (
 		<>
@@ -85,9 +71,13 @@ const Page = () => {
 					}}
 				>
 					<div>
-						<Stack spacing={1} sx={{ mb: 3 }}>
+						<Stack
+							spacing={1}
+							sx={{ mb: 3 }}
+						>
 							<Typography variant="h4">Login</Typography>
-							<Typography color="text.secondary" variant="body2">
+							<Typography color="text.secondary"
+								variant="body2">
 								Don&apos;t have an account? &nbsp;
 								<Link
 									component={NextLink}
@@ -99,12 +89,17 @@ const Page = () => {
 								</Link>
 							</Typography>
 						</Stack>
-						<Tabs onChange={handleMethodChange} sx={{ mb: 3 }} value={method}>
-							<Tab label="Email" value="email" />
-							<Tab label="Phone Number" value="phoneNumber" />
+						<Tabs onChange={handleMethodChange}
+							sx={{ mb: 3 }}
+							value={method}>
+							<Tab label="Email"
+								value="email" />
+							<Tab label="Phone Number"
+								value="phoneNumber" />
 						</Tabs>
 						{method === "email" && (
-							<form noValidate onSubmit={formik.handleSubmit}>
+							<form noValidate
+								onSubmit={formik.handleSubmit}>
 								<Stack spacing={3}>
 									<TextField
 										fullWidth
@@ -133,11 +128,17 @@ const Page = () => {
 									Optionally you can skip.
 								</FormHelperText> */}
 								{formik.errors.submit && (
-									<Typography color="error" sx={{ mt: 3 }} variant="body2">
+									<Typography color="error"
+										sx={{ mt: 3 }}
+										variant="body2">
 										{formik.errors.submit}
 									</Typography>
 								)}
-								<Button fullWidth size="large" sx={{ mt: 3 }} type="submit" variant="contained">
+								<Button fullWidth
+									size="large"
+									sx={{ mt: 3 }}
+									type="submit"
+									variant="contained">
 									Continue
 								</Button>
 								{/* <Button
@@ -148,7 +149,11 @@ const Page = () => {
 								>
 									Skip authentication
 								</Button> */}
-								<Alert color="primary" severity="info" sx={{ mt: 3 }}>
+								<Alert
+									color="primary"
+									severity="info"
+									sx={{ mt: 3 }}
+								>
 									<div>
 										You can use <b>thangq1@gmail.com</b> and password <b>123456##Bqt</b>
 									</div>
@@ -157,7 +162,8 @@ const Page = () => {
 						)}
 						{method === "phoneNumber" && (
 							<div>
-								<Typography sx={{ mb: 1 }} variant="h6">
+								<Typography sx={{ mb: 1 }}
+									variant="h6">
 									Not available
 								</Typography>
 								<Typography color="text.secondary">We will update in future</Typography>

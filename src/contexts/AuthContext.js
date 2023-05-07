@@ -73,6 +73,7 @@ export const AuthProvider = (props) => {
 	const [currentUser, setCurrentUser] = useState({})
 	const router = useRouter();
 	const { refreshApp, refresh } = useAppContext();
+
 	const initialize = async () => {
 		// Prevent from calling twice in development mode with React.StrictMode enabled
 		if (initialized.current) {
@@ -129,9 +130,10 @@ export const AuthProvider = (props) => {
 		initialize();
 	}, []);
 
+
 	const signIn = async (email, password) => {
 		const res = await authService.login(email, password);
-		// console.log(res);
+		console.log(res);
 		if (!res) throw new Error('Server error!! Please come back later😘');
 		if (!res || res?.statusCode === 400) throw new Error('Please check your email and password');
 
@@ -145,7 +147,6 @@ export const AuthProvider = (props) => {
 		const userRes = await userService.getInfo(res.data?.userID)
 		setCurrentUser(userRes)
 		localStorage.setItem(localStorageConst.CURRENT_USER, JSON.stringify(userRes))
-		// console.log(userRes);
 
 		const user = {
 			id: userRes.id,
@@ -158,6 +159,7 @@ export const AuthProvider = (props) => {
 			payload: user
 		});
 		refresh()
+		window.location.replace("/");
 	};
 
 	const signUp = async (email, username, password) => {

@@ -6,12 +6,12 @@ import { useEmployee } from "src/hooks/use-employee";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { EmployeeProfile } from "src/sections/employees/EmployeeProfile";
 import { EmployeeProfileDetails } from "src/sections/employees/EmployeeProfileDetails";
-import { AddInsurance } from "src/sections/employees/addInsurance";
 import { useEffect, useState } from "react";
 import { useInsuranceContext } from "src/contexts/InsuranceContext";
 import employeeService from "src/services/employeeService";
-import { UpdateInsurance } from "src/sections/employees/updateInsurance";
 import { useApp } from "src/hooks/use-app";
+import { UpdateInsurance } from "src/sections/employees/updateInsurance";
+import { AddInsurance } from "src/sections/employees/AddInsurance";
 
 const Page = () => {
 	const router = useRouter();

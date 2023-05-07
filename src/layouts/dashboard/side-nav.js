@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { Logo } from 'src/components/logo';
 import { Scrollbar } from 'src/components/scrollbar';
-import { sideNavConfig } from './sideNavConfig';
+import sideNavDefine from './sideNavDefine';
 import { SideNavItem } from './side-nav-item';
 
 export const SideNav = (props) => {
@@ -106,7 +106,7 @@ export const SideNav = (props) => {
 							m: 0
 						}}
 					>
-						{sideNavConfig.map((item) => {
+						{sideNavDefine.map((item) => {
 							const active = item.path ? (pathname === item.path) : false;
 
 							return (

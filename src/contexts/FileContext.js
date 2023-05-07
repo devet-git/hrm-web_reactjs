@@ -21,12 +21,12 @@ export const FileProvider = (props) => {
 	}, [children, refreshApp])
 
 
-	const getAllFiles = async () => {
+	const getData = async (id) => {
 		setIsLoading(true)
-		let res = await fileService.getAll();
-		console.log(res);
-		refresh()
+		const res = await fileService.getData(id);
 		setIsLoading(false)
+		refresh()
+		return res;
 	}
 	const download = async (url, fileName) => {
 		setIsLoading(true)
@@ -53,7 +53,7 @@ export const FileProvider = (props) => {
 		setIsLoading(false)
 	}
 	return (
-		<FileContext.Provider value={{ isLoading, fileList, download, upload, deleteFile }}>
+		<FileContext.Provider value={{ isLoading, fileList, getData, download, upload, deleteFile }}>
 			{children}
 		</FileContext.Provider>
 	)

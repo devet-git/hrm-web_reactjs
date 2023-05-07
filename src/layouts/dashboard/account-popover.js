@@ -27,7 +27,7 @@ export const AccountPopover = (props) => {
 			}}
 			onClose={onClose}
 			open={open}
-			PaperProps={{ sx: { width: 200 } }}
+			PaperProps={{ sx: { width: 250 } }}
 		>
 			<Box
 				sx={{
@@ -41,6 +41,7 @@ export const AccountPopover = (props) => {
 				<Typography
 					color="text.secondary"
 					variant="body2"
+					noWrap={false}
 				>
 					{auth.currentUser.email}
 				</Typography>

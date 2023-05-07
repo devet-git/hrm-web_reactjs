@@ -76,6 +76,7 @@ const Page = () => {
 												<ArrowDownOnSquareIcon />
 											</SvgIcon>
 										)}
+										disabled={employeeList?.length === 0}
 										onClick={handleExport}
 									>
 										Export

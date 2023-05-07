@@ -176,7 +176,25 @@ const GenPositionFromId = ({ id }) => {
 		</span>
 	);
 };
-
+const ConfirmDeleteDialog = memo(({ isOpen, handleClose, handleDelete }) => (
+	<Dialog
+		open={isOpen}
+		onClose={handleClose}
+		aria-labelledby="alert-dialog-title"
+		aria-describedby="alert-dialog-description"
+	>
+		<DialogTitle id="alert-dialog-title">{"Are you sure delete this employee?"}</DialogTitle>
+		<DialogContent>
+			<DialogContentText id="alert-dialog-description">
+				You should consider carefully before deleting your employee
+			</DialogContentText>
+		</DialogContent>
+		<DialogActions>
+			<Button onClick={handleClose}>Cancel</Button>
+			<Button onClick={handleDelete}>Delete</Button>
+		</DialogActions>
+	</Dialog>
+));
 const RowActions = ({ empId, empEmail }) => {
 	const router = useRouter();
 	const [isOpenConfirmDeleteDialog, setIsOpenConfirmDeleteDialog] = useState(false);
@@ -194,25 +212,7 @@ const RowActions = ({ empId, empEmail }) => {
 
 	const handleCloseConfirmDeleteDialog = () => setIsOpenConfirmDeleteDialog(false);
 
-	const ConfirmDeleteDialog = memo(() => (
-		<Dialog
-			open={isOpenConfirmDeleteDialog}
-			// onClose={handleCloseConfirmDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
-		>
-			<DialogTitle id="alert-dialog-title">{"Are you sure delete this employee?"}</DialogTitle>
-			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					You should consider carefully before deleting your employee
-				</DialogContentText>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={handleCloseConfirmDeleteDialog}>Cancel</Button>
-				<Button onClick={handleDelete}>Delete</Button>
-			</DialogActions>
-		</Dialog>
-	));
+
 	return (
 		<>
 			<Tooltip title="Update">
@@ -231,30 +231,14 @@ const RowActions = ({ empId, empEmail }) => {
 			<EmployeeSendMailFormDialog
 				isOpen={isOpenSendMailDialog}
 				onClose={() => setIsOpenSendMailDialog(false)}
+				onCancel={() => setIsOpenSendMailDialog(false)}
 				email={empEmail}
 			/>
-			{/* <Dialog
-				open={isOpenConfirmDeleteDialog}
-				// onClose={handleCloseConfirmDeleteDialog}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description"
-			>
-				<DialogTitle id="alert-dialog-title">
-					{"Are you sure delete this employee?"}
-				</DialogTitle>
-				<DialogContent>
-					<DialogContentText id="alert-dialog-description">
-						You should consider carefully before deleting your employee
-					</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleCloseConfirmDeleteDialog}>Cancel</Button>
-					<Button onClick={handleDelete}>
-						Delete
-					</Button>
-				</DialogActions>
-			</Dialog> */}
-			<ConfirmDeleteDialog />
+			<ConfirmDeleteDialog
+				isOpen={isOpenConfirmDeleteDialog}
+				handleClose={handleCloseConfirmDeleteDialog}
+				handleDelete={handleDelete}
+			/>
 		</>
 	);
 };
@@ -272,7 +256,10 @@ export default function EmployeesDataTable({ data }) {
 					placeholder="Search employee"
 					startAdornment={
 						<InputAdornment position="start">
-							<SvgIcon color="action" fontSize="small">
+							<SvgIcon
+								color="action"
+								fontSize="small"
+							>
 								<MagnifyingGlassIcon />
 							</SvgIcon>
 						</InputAdornment>
