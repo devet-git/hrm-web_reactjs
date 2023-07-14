@@ -154,8 +154,11 @@ const Page = () => {
 									severity="info"
 									sx={{ mt: 3 }}
 								>
-									<div>
+									{/* <div>
 										You can use <b>thangq1@gmail.com</b> and password <b>123456##Bqt</b>
+									</div> */}
+									<div>
+										Current accout above only for Dev. Please create new account
 									</div>
 								</Alert>
 							</form>

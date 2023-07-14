@@ -159,7 +159,8 @@ export const AuthProvider = (props) => {
 			payload: user
 		});
 		refresh()
-		window.location.replace("/");
+
+		window.location.replace(window.location.origin + "//" + (router.query.continueUrl || ''));
 	};
 
 	const signUp = async (email, username, password) => {

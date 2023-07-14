@@ -11,7 +11,6 @@ import { useInsuranceContext } from "src/contexts/InsuranceContext";
 import employeeService from "src/services/employeeService";
 import { useApp } from "src/hooks/use-app";
 import { UpdateInsurance } from "src/sections/employees/updateInsurance";
-import { AddInsurance } from "src/sections/employees/AddInsurance";
 
 const Page = () => {
 	const router = useRouter();
@@ -72,10 +71,8 @@ const Page = () => {
 									xs={12}
 									item
 								>
-									{insurance ? (
+									{insurance && (
 										<UpdateInsurance info={insurance} />
-									) : (
-										<AddInsurance employeeId={id} />
 									)}
 								</Grid>
 							</Grid>

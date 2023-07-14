@@ -96,7 +96,7 @@ export default function DepartmentAddNewOrUpdate() {
 						<Button
 							type='submit'
 							variant='contained'
-							disabled={!formik.values.name}
+							disabled={!formik.values.name || (departmentContext.departmentToUpdate?.name === formik.values.name)}
 							startIcon={(
 								<SvgIcon fontSize="small">
 									{!departmentContext.departmentToUpdate ? <PlusIcon /> : <RxUpdate />}
