@@ -90,7 +90,16 @@ export default function PositionAddNewOrUpdate() {
 							label="Level"
 							name="level"
 							type="number"
-							InputProps={{ inputProps: { min: 0, max: 3, maxLength: 1 } }}
+							InputProps={{
+								inputProps: {
+									min: 0, max: 3,
+									maxLength: 1,
+									onKeyDown: (event) => {
+										const arrowUpDownKeyRegex = new RegExp("(ArrowUp|ArrowDown)")
+										!arrowUpDownKeyRegex.test(event.key) && event.preventDefault();
+									},
+								}
+							}}
 							error={!!(formik.touched.level && formik.errors.level)}
 							helperText={formik.touched.level && formik.errors.level}
 							value={formik.values.level}
@@ -122,7 +131,7 @@ export default function PositionAddNewOrUpdate() {
 						<Button
 							type="submit"
 							variant="contained"
-							disabled={!formik.values.name}
+							disabled={!formik.values.name || (positionContext.positionToUpdate?.name === formik.values.name)}
 							startIcon={
 								<SvgIcon fontSize="small">
 									{!positionContext.positionToUpdate ? <PlusIcon /> : <RxUpdate />}
